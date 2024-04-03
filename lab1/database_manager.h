@@ -11,8 +11,8 @@ class DatabaseManager
 {
 public:
     DatabaseManager(const QString& path);
-    bool open();
-    void close();
+    ~DatabaseManager();
+    bool isOpen() const;
 
     // Methods for performing database operations
     bool addEmployee(const QString& name, double hourlyRate);
@@ -26,6 +26,11 @@ public:
 private:
     QSqlDatabase m_db;
     QString m_path;
+
+    // Helper methods
+    bool open();
+    void close();
+    bool createTables();
 };
 
 #endif // DATABASE_MANAGER_H

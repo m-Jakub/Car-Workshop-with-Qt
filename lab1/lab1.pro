@@ -13,14 +13,17 @@ CONFIG += debug
 
 SOURCES += \
     database_manager.cpp \
+    employees.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     database_manager.h \
+    employees.h \
     mainwindow.h
 
 FORMS += \
+    employees.ui \
     mainwindow.ui
 
 # Default rules for deployment.

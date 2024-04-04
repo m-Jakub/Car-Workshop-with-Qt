@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "employees.h"
+// class Employees;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -17,7 +19,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_Exit_clicked();
+
+    void on_Employees_clicked();
+
 private:
     Ui::MainWindow *ui;
+    Employees *employeesWindow = nullptr;
 };
 #endif // MAINWINDOW_H

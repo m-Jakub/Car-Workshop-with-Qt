@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "employees.h"
 #include "database_manager.h"
 #include <QApplication>
 

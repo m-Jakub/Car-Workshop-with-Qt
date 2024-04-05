@@ -1,13 +1,13 @@
 #ifndef EMPLOYEES_H
 #define EMPLOYEES_H
 
-#include <QDockWidget>
+#include <QWidget>
 
 namespace Ui {
 class Employees;
 }
 
-class Employees : public QDockWidget
+class Employees : public QWidget
 {
     Q_OBJECT
 

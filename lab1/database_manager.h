@@ -15,6 +15,7 @@ public:
     // Methods for performing database operations
     bool addEmployee(const QString& name, double hourlyRate);
     bool removeEmployee(int employeeID);
+    bool removeAllEmployees();
     bool addCalendarEntry(int employeeID, const QDateTime& startTime, const QDateTime& endTime, const QString& status, const QString& description);
     bool addTicket(const QString& vehicleBrand, const QString& vehicleModel, const QString& registrationID, const QString& problemDescription, int assignedEmployeeID, double pricePaidByClient, const QString& state);
     bool addRepairSchedule(int ticketID, int employeeID, const QDateTime& startTime, const QDateTime& endTime);

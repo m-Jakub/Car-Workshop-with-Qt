@@ -7,8 +7,27 @@ int main(int argc, char *argv[])
 {
     // short testing for database manager
     DatabaseManager dbManager("test.db");
+    dbManager.removeAllEmployees();
     dbManager.addEmployee("John Doe", 10.0);
     dbManager.addEmployee("Jane Doe", 15.0);
+    dbManager.addEmployee("Adam Smith", 12.0);
+    dbManager.addEmployee("Emily Johnson", 14.0);
+    dbManager.addEmployee("Michael Williams", 11.0);
+    dbManager.addEmployee("Olivia Brown", 13.0);
+    dbManager.addEmployee("Daniel Jones", 10.0);
+    dbManager.addEmployee("Sophia Miller", 15.0);
+    dbManager.addEmployee("Matthew Davis", 12.0);
+    dbManager.addEmployee("Ava Garcia", 14.0);
+    dbManager.addEmployee("Jacob Rodriguez", 11.0);
+    dbManager.addEmployee("Isabella Wilson", 13.0);
+    dbManager.addEmployee("William Martinez", 10.0);
+    dbManager.addEmployee("Mia Anderson", 15.0);
+    dbManager.addEmployee("Joseph Taylor", 12.0);
+    dbManager.addEmployee("Charlotte Thomas", 14.0);
+    dbManager.addEmployee("David Hernandez", 11.0);
+    dbManager.addEmployee("Samantha Moore", 13.0);
+    dbManager.addEmployee("James Clark", 10.0);
+    dbManager.addEmployee("Abigail Lewis", 15.0);
 
     dbManager.addCalendarEntry(1, QDateTime::currentDateTime(), QDateTime::currentDateTime().addSecs(3600), "Available", "No description");
     dbManager.addCalendarEntry(2, QDateTime::currentDateTime(), QDateTime::currentDateTime().addSecs(3600), "Available", "No description");

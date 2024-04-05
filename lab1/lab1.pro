@@ -15,16 +15,19 @@ SOURCES += \
     database_manager.cpp \
     employees.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    tickets.cpp
 
 HEADERS += \
     database_manager.h \
     employees.h \
-    mainwindow.h
+    mainwindow.h \
+    tickets.h
 
 FORMS += \
     employees.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    tickets.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

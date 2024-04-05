@@ -4,10 +4,12 @@
 #include <QMainWindow>
 #include "employees.h"
 // class Employees;
+#include "tickets.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
+namespace Ui
+{
+    class MainWindow;
 }
 QT_END_NAMESPACE
 
@@ -19,13 +21,19 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+protected:
+    void closeEvent(QCloseEvent *event) override;
+
 private slots:
     void on_Exit_clicked();
 
     void on_Employees_clicked();
 
+    void on_Tickets_clicked();
+
 private:
     Ui::MainWindow *ui;
     Employees *employeesWindow = nullptr;
+    Tickets *ticketsWindow = nullptr;
 };
 #endif // MAINWINDOW_H

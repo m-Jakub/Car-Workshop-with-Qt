@@ -60,6 +60,26 @@ bool DatabaseManager::removeEmployee(int employeeID)
     return true;
 }
 
+bool DatabaseManager::removeAllEmployees()
+{
+    if (!m_db.isOpen())
+    {
+        qDebug() << "Error: Database is not open.";
+        return false;
+    }
+
+    QSqlQuery query("DELETE FROM Employees");
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to remove all employees:" << query.lastError().text();
+        return false;
+    }
+
+    qDebug() << "All employees removed successfully.";
+    return true;
+}
+
 bool DatabaseManager::addCalendarEntry(int employeeID, const QDateTime &startTime, const QDateTime &endTime, const QString &status, const QString &description)
 {
     if (!m_db.isOpen())

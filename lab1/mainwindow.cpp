@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "employees.h"
+// #include "../build-lab1-Desktop_Qt_6_6_2_MinGW_64_bit-Debug/ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -12,6 +12,22 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    // Close all top-level widgets except the main window
+    QWidgetList topLevelWidgets = QApplication::topLevelWidgets();
+    for (auto widget : topLevelWidgets)
+    {
+        if (widget != this)
+        {
+            widget->close();
+        }
+    }
+
+    // Call the default close event handling
+    QMainWindow::closeEvent(event);
 }
 
 void MainWindow::on_Exit_clicked()
@@ -31,9 +47,22 @@ void MainWindow::on_Employees_clicked()
         employeesWindow = new Employees();
 
     if (employeesWindow && employeesWindow->isMinimized())
-        employeesWindow->showNormal(); // Unminimising the window
+        employeesWindow->showNormal();
     else
         employeesWindow->show();
-    employeesWindow->raise();          // Bringing the window to the front
-    employeesWindow->activateWindow(); // Activating the window
+    employeesWindow->raise();
+    employeesWindow->activateWindow();
+}
+
+void MainWindow::on_Tickets_clicked()
+{
+    if (!ticketsWindow)
+        ticketsWindow = new Tickets();
+
+    if (ticketsWindow && ticketsWindow->isMinimized())
+        ticketsWindow->showNormal();
+    else
+        ticketsWindow->show();
+    ticketsWindow->raise();
+    ticketsWindow->activateWindow();
 }

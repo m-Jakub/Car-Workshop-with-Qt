@@ -56,13 +56,13 @@ void MainWindow::on_Employees_clicked()
 
 void MainWindow::on_Tickets_clicked()
 {
-    if (!ticketsWindow)
-        ticketsWindow = new Tickets();
+    // if (!ticketsWindow)
+    //     ticketsWindow = new Tickets();
 
-    if (ticketsWindow && ticketsWindow->isMinimized())
-        ticketsWindow->showNormal();
-    else
-        ticketsWindow->show();
-    ticketsWindow->raise();
-    ticketsWindow->activateWindow();
+    // if (ticketsWindow && ticketsWindow->isMinimized())
+    //     ticketsWindow->showNormal();
+    // else
+    //     ticketsWindow->show();
+    // ticketsWindow->raise();
+    // ticketsWindow->activateWindow();
 }

@@ -3,8 +3,9 @@
 
 #include <QWidget>
 
-namespace Ui {
-class Employees;
+namespace Ui
+{
+    class Employees;
 }
 
 class Employees : public QWidget
@@ -14,6 +15,10 @@ class Employees : public QWidget
 public:
     explicit Employees(QWidget *parent = nullptr);
     ~Employees();
+    void setupTable();
+
+private slots:
+    void on_Delete_clicked();
 
 private:
     Ui::Employees *ui;

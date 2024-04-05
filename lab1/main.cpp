@@ -5,6 +5,8 @@
 
 int main(int argc, char *argv[])
 {
+    QApplication a(argc, argv);
+
     // short testing for database manager
     DatabaseManager dbManager("database.db");
     // dbManager.removeAllEmployees();
@@ -51,8 +53,8 @@ int main(int argc, char *argv[])
     // dbManager.addWorkLogEntry(1, 2, QDateTime::currentDateTime(), QDateTime::currentDateTime().addSecs(3600));
 
     // other code
-    QApplication a(argc, argv);
-    MainWindow w;
+    MainWindow w(&dbManager);
     w.show();
+
     return a.exec();
 }

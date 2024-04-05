@@ -5,6 +5,7 @@
 #include "employees.h"
 // class Employees;
 #include "tickets.h"
+#include "database_manager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -18,7 +19,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(DatabaseManager *dbmanager, QWidget *parent = nullptr);
     ~MainWindow();
 
 protected:
@@ -35,5 +36,6 @@ private:
     Ui::MainWindow *ui;
     Employees *employeesWindow = nullptr;
     Tickets *ticketsWindow = nullptr;
+    DatabaseManager *dbManager;
 };
 #endif // MAINWINDOW_H

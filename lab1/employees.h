@@ -2,6 +2,7 @@
 #define EMPLOYEES_H
 
 #include "database_manager.h"
+#include "addemployee.h"
 #include <QWidget>
 
 namespace Ui
@@ -21,11 +22,13 @@ public:
 
 private slots:
     void on_Delete_clicked();
+    void on_Add_clicked();
 
 private:
     Ui::Employees *ui;
     DatabaseManager *dbManager; // Pointer to the database
     QHash<int, int> rowToIdMap; // Maps row number to employee ID
+    AddEmployee *addEmployeeWindow = nullptr;
 };
 
 #endif // EMPLOYEES_H

@@ -87,3 +87,17 @@ void Employees::on_Delete_clicked()
         rowToIdMap.remove(selectedRow);
     }
 }
+
+void Employees::on_Add_clicked()
+{
+    if (!addEmployeeWindow)
+        addEmployeeWindow = new AddEmployee(dbManager);
+
+    if (addEmployeeWindow && addEmployeeWindow->isMinimized())
+        addEmployeeWindow->showNormal();
+    else
+        addEmployeeWindow->show();
+    addEmployeeWindow->raise();
+    addEmployeeWindow->activateWindow();
+}
+

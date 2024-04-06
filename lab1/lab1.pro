@@ -12,6 +12,7 @@ CONFIG += debug
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    addemployee.cpp \
     database_manager.cpp \
     employees.cpp \
     main.cpp \
@@ -19,12 +20,14 @@ SOURCES += \
     tickets.cpp
 
 HEADERS += \
+    addemployee.h \
     database_manager.h \
     employees.h \
     mainwindow.h \
     tickets.h
 
 FORMS += \
+    addemployee.ui \
     employees.ui \
     mainwindow.ui \
     tickets.ui

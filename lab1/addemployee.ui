@@ -34,14 +34,14 @@
      <widget class="QLineEdit" name="nameLineEdit"/>
     </item>
     <item>
-     <widget class="QLabel" name="hrlyRateLabel">
+     <widget class="QLabel" name="hourlyRateLabel">
       <property name="text">
        <string>Hourly Rate:</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="hrlyRateLineEdit"/>
+     <widget class="QLineEdit" name="hourlyRateLineEdit"/>
     </item>
    </layout>
   </widget>

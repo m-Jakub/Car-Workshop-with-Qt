@@ -14,6 +14,7 @@ CONFIG += debug
 SOURCES += \
     addemployee.cpp \
     database_manager.cpp \
+    delete_confirmation_dialog.cpp \
     employees.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -22,12 +23,14 @@ SOURCES += \
 HEADERS += \
     addemployee.h \
     database_manager.h \
+    delete_confirmation_dialog.h \
     employees.h \
     mainwindow.h \
     tickets.h
 
 FORMS += \
     addemployee.ui \
+    delete_confirmation_dialog.ui \
     employees.ui \
     mainwindow.ui \
     tickets.ui

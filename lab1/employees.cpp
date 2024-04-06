@@ -1,6 +1,7 @@
 #include "employees.h"
 #include "ui_employees.h"
 #include "database_manager.h"
+#include "delete_confirmation_dialog.h"
 #include <QSqlQuery>
 
 Employees::Employees(DatabaseManager *dbManager, QWidget *parent)
@@ -8,20 +9,8 @@ Employees::Employees(DatabaseManager *dbManager, QWidget *parent)
 {
     ui->setupUi(this);
 
-    // Setting up the table
     setupTable();
     populateTable();
-    // QSqlQuery query("SELECT Name, HourlyRate FROM Employees");
-    // while (query.next())
-    // {
-    //     QTableWidgetItem *nameItem = new QTableWidgetItem(query.value(0).toString());
-    //     QTableWidgetItem *rateItem = new QTableWidgetItem(query.value(1).toString());
-
-    //     int row = ui->tableWidget->rowCount();
-    //     ui->tableWidget->insertRow(row);
-    //     ui->tableWidget->setItem(row, 0, nameItem);
-    //     ui->tableWidget->setItem(row, 1, rateItem);
-    // }
 }
 
 void Employees::setupTable()
@@ -33,6 +22,7 @@ void Employees::setupTable()
     ui->tableWidget->setHorizontalHeaderLabels(headerLabels);
 
     // Resizing columns
+    ui->tableWidget->setColumnWidth(0, 200);
     ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
 
     // Setting selection behavior to select the whole row
@@ -69,22 +59,55 @@ Employees::~Employees()
     delete ui;
 }
 
+// void Employees::on_Delete_clicked()
+// {
+
+//     int selectedRow = ui->tableWidget->currentRow();
+
+//     if (selectedRow >= 0)
+//     {
+//         // Retrieving the ID using the row index
+//         int employeeId = rowToIdMap.value(selectedRow);
+
+//         // Removing the employee from the database using the DatabaseManager object
+//         dbManager->removeEmployee(employeeId);
+
+//         ui->tableWidget->removeRow(selectedRow);
+
+//         // Removing the ID from the rowToIdMap
+//         rowToIdMap.remove(selectedRow);
+//     }
+// }
+
 void Employees::on_Delete_clicked()
 {
     int selectedRow = ui->tableWidget->currentRow();
 
     if (selectedRow >= 0)
     {
-        // Retrieving the ID using the row index
-        int employeeId = rowToIdMap.value(selectedRow);
+        // Retrieve the name using the row index
+        QString employeeName = ui->tableWidget->item(selectedRow, 0)->text();
 
-        // Removing the employee from the database using the DatabaseManager object
-        dbManager->removeEmployee(employeeId);
+        // Instantiate the DeleteConfirmationDialog with the employee name
+        DeleteConfirmationDialog confirmationDialog(employeeName);
 
-        ui->tableWidget->removeRow(selectedRow);
+        // Connect the deleteConfirmed() signal to a slot that performs deletion
+        connect(&confirmationDialog, &DeleteConfirmationDialog::deleteConfirmed, this, [=]() {
+            // Retrieve the ID using the row index
+            int employeeId = rowToIdMap.value(selectedRow);
 
-        // Removing the ID from the rowToIdMap
-        rowToIdMap.remove(selectedRow);
+            // Remove the employee from the database using the DatabaseManager object
+            dbManager->removeEmployee(employeeId);
+
+            // Remove the row from the tableWidget
+            ui->tableWidget->removeRow(selectedRow);
+
+            // Remove the ID from the rowToIdMap
+            rowToIdMap.remove(selectedRow);
+        });
+
+        // Display the confirmation dialog
+        confirmationDialog.exec();
     }
 }
 

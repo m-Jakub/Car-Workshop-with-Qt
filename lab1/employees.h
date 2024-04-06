@@ -23,6 +23,7 @@ public:
 private slots:
     void on_Delete_clicked();
     void on_Add_clicked();
+    // bool eventFilter(QObject *watched, QEvent *event);
 
 private:
     Ui::Employees *ui;

@@ -62,6 +62,30 @@ bool DatabaseManager::removeEmployee(int employeeID)
     return true;
 }
 
+bool DatabaseManager::updateEmployee(int employeeID, const QString &name, double hourlyRate)
+{
+    if (!m_db.isOpen())
+    {
+        qDebug() << "Error: Database is not open.";
+        return false;
+    }
+
+    QSqlQuery query;
+    query.prepare("UPDATE Employees SET Name = :name, HourlyRate = :hourlyRate WHERE EmployeeID = :employeeID");
+    query.bindValue(":name", name);
+    query.bindValue(":hourlyRate", hourlyRate);
+    query.bindValue(":employeeID", employeeID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to update employee:" << query.lastError().text();
+        return false;
+    }
+
+    qDebug() << "Employee updated successfully.";
+    return true;
+}
+
 bool DatabaseManager::removeAllEmployees()
 {
     if (!m_db.isOpen())

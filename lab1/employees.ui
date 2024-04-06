@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="Add">
+  <widget class="QPushButton" name="addButton">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -55,28 +55,28 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QPushButton" name="pushButton_3">
+     <widget class="QPushButton" name="showCalendarButton">
       <property name="text">
        <string>Show Calendar</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButton_4">
+     <widget class="QPushButton" name="showTicketsButton">
       <property name="text">
        <string>Show Tickets</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButton_5">
+     <widget class="QPushButton" name="updateButton">
       <property name="text">
        <string>Update</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="Delete">
+     <widget class="QPushButton" name="deleteButton">
       <property name="text">
        <string>Delete</string>
       </property>

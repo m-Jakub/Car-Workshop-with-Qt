@@ -24,17 +24,20 @@ private slots:
     // ==================================================   
     // IMPLEMENT ENABLING AND DISABLING OF DELETE BUTTON
     // ==================================================   
-    void on_Delete_clicked();
-    void on_Add_clicked();
+    void on_deleteButton_clicked();
+    void on_addButton_clicked();
     // ==================================================   
     // bool eventFilter(QObject *watched, QEvent *event);
-    // ==================================================   
+    // ==================================================
+
+
+    void on_updateButton_clicked();
 
 private:
     Ui::Employees *ui;
     DatabaseManager *dbManager; // Pointer to the database
     QHash<int, int> rowToIdMap; // Maps row number to employee ID
-    AddEmployeeDialog *addEmployeeWindow = nullptr;
+    AddEmployeeDialog *dialogWindow = nullptr;
 };
 
 #endif // EMPLOYEES_H

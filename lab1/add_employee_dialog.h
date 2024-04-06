@@ -15,7 +15,7 @@ class AddEmployeeDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AddEmployeeDialog(DatabaseManager *dbManager, QWidget *parent = nullptr);
+    explicit AddEmployeeDialog(DatabaseManager *dbManager, const QString &name = "", double hourlyRate = 0.0, QWidget *parent = nullptr);
     ~AddEmployeeDialog();
 
 signals:

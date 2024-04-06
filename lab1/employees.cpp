@@ -29,7 +29,7 @@ void Employees::setupTable()
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     // Setting the window title
-    setWindowTitle("Employees");
+    setWindowTitle("Employees - Car Workshop Management System");
 }
 
 void Employees::populateTable()
@@ -59,7 +59,7 @@ Employees::~Employees()
     delete ui;
 }
 
-void Employees::on_Delete_clicked()
+void Employees::on_deleteButton_clicked()
 {
     int selectedRow = ui->tableWidget->currentRow();
 
@@ -92,13 +92,13 @@ void Employees::on_Delete_clicked()
     }
 }
 
-void Employees::on_Add_clicked()
+void Employees::on_addButton_clicked()
 {
     // Instantiating the AddEmployeeDialog
-    addEmployeeWindow = new AddEmployeeDialog(dbManager);
+    dialogWindow = new AddEmployeeDialog(dbManager);
 
     // Connecting the addEmployee signal to a slot that adds the employee to the table
-    connect(addEmployeeWindow, &AddEmployeeDialog::addEmployee, this, [=](const QString &name, double hourlyRate)
+    connect(dialogWindow, &AddEmployeeDialog::addEmployee, this, [=](const QString &name, double hourlyRate)
             {
         // Inserting the employee into the database
         int id = dbManager->addEmployee(name, hourlyRate);
@@ -113,5 +113,28 @@ void Employees::on_Add_clicked()
         rowToIdMap[row] = id; });
 
     // Displaying the addEmployeeWindow
-    addEmployeeWindow->exec();
+    dialogWindow->exec();
+}
+
+void Employees::on_updateButton_clicked()
+{
+    int selectedRow = ui->tableWidget->currentRow();
+
+    // Instantiating the AddEmployeeDialog
+    dialogWindow = new AddEmployeeDialog(dbManager, ui->tableWidget->item(selectedRow, 0)->text(), ui->tableWidget->item(selectedRow, 1)->text().toDouble());
+
+    connect(dialogWindow, &AddEmployeeDialog::addEmployee, this, [=](const QString &name, double hourlyRate)
+            {
+         // Retrieve the ID using the row index
+        int employeeId = rowToIdMap.value(selectedRow);
+
+        // Inserting the employee into the database
+        dbManager->updateEmployee(employeeId, name, hourlyRate);
+        // Inserting the employee into the tableWidget
+        int row = ui->tableWidget->rowCount();
+        ui->tableWidget->setItem(selectedRow, 0, new QTableWidgetItem(name));
+        ui->tableWidget->setItem(selectedRow, 1, new QTableWidgetItem(QString::number(hourlyRate))); });
+
+    // Displaying the addEmployeeWindow
+    dialogWindow->exec();
 }

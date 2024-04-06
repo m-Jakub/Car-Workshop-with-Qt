@@ -15,12 +15,12 @@ DatabaseManager::DatabaseManager(const QString &path)
     createTables();
 }
 
-bool DatabaseManager::addEmployee(const QString &name, double hourlyRate)
+int DatabaseManager::addEmployee(const QString &name, double hourlyRate)
 {
     if (!m_db.isOpen())
     {
         qDebug() << "Error: Database is not open.";
-        return false;
+        return 0;
     }
 
     QSqlQuery query;
@@ -31,11 +31,13 @@ bool DatabaseManager::addEmployee(const QString &name, double hourlyRate)
     if (!query.exec())
     {
         qDebug() << "Error: Failed to add employee:" << query.lastError().text();
-        return false;
+        return 0;
     }
 
-    qDebug() << "Employee added successfully.";
-    return true;
+    int employeeID = query.lastInsertId().toInt();
+
+    qDebug() << "Employee added successfully with ID:" << employeeID;
+    return employeeID;
 }
 
 bool DatabaseManager::removeEmployee(int employeeID)
@@ -80,12 +82,12 @@ bool DatabaseManager::removeAllEmployees()
     return true;
 }
 
-bool DatabaseManager::addCalendarEntry(int employeeID, const QDateTime &startTime, const QDateTime &endTime, const QString &status, const QString &description)
+int DatabaseManager::addCalendarEntry(int employeeID, const QDateTime &startTime, const QDateTime &endTime, const QString &status, const QString &description)
 {
     if (!m_db.isOpen())
     {
         qDebug() << "Error: Database is not open.";
-        return false;
+        return 0;
     }
 
     QSqlQuery query;
@@ -100,19 +102,21 @@ bool DatabaseManager::addCalendarEntry(int employeeID, const QDateTime &startTim
     if (!query.exec())
     {
         qDebug() << "Error: Failed to add calendar entry:" << query.lastError().text();
-        return false;
+        return 0;
     }
 
-    qDebug() << "Calendar entry added successfully.";
-    return true;
+    int calendarID = query.lastInsertId().toInt();
+
+    qDebug() << "Calendar entry added successfully with ID:" << calendarID;
+    return calendarID;
 }
 
-bool DatabaseManager::addTicket(const QString &vehicleBrand, const QString &vehicleModel, const QString &registrationID, const QString &problemDescription, int assignedEmployeeID, double pricePaidByClient, const QString &state)
+int DatabaseManager::addTicket(const QString &vehicleBrand, const QString &vehicleModel, const QString &registrationID, const QString &problemDescription, int assignedEmployeeID, double pricePaidByClient, const QString &state)
 {
     if (!m_db.isOpen())
     {
         qDebug() << "Error: Database is not open.";
-        return false;
+        return 0;
     }
 
     QSqlQuery query;
@@ -129,19 +133,21 @@ bool DatabaseManager::addTicket(const QString &vehicleBrand, const QString &vehi
     if (!query.exec())
     {
         qDebug() << "Error: Failed to add ticket:" << query.lastError().text();
-        return false;
+        return 0;
     }
 
-    qDebug() << "Ticket added successfully.";
-    return true;
+    int ticketID = query.lastInsertId().toInt();
+
+    qDebug() << "Ticket added successfully with ID:" << ticketID;
+    return ticketID;
 }
 
-bool DatabaseManager::addRepairSchedule(int ticketID, int employeeID, const QDateTime &startTime, const QDateTime &endTime)
+int DatabaseManager::addRepairSchedule(int ticketID, int employeeID, const QDateTime &startTime, const QDateTime &endTime)
 {
     if (!m_db.isOpen())
     {
         qDebug() << "Error: Database is not open.";
-        return false;
+        return 0;
     }
 
     QSqlQuery query;
@@ -154,19 +160,21 @@ bool DatabaseManager::addRepairSchedule(int ticketID, int employeeID, const QDat
     if (!query.exec())
     {
         qDebug() << "Error: Failed to add repair schedule:" << query.lastError().text();
-        return false;
+        return 0;
     }
 
+    int timeSlotID = query.lastInsertId().toInt();
+
     qDebug() << "Repair schedule added successfully.";
-    return true;
+    return timeSlotID;
 }
 
-bool DatabaseManager::addEstimate(int ticketID, const QString &description, double expectedCost, bool acceptedByClient)
+int DatabaseManager::addEstimate(int ticketID, const QString &description, double expectedCost, bool acceptedByClient)
 {
     if (!m_db.isOpen())
     {
         qDebug() << "Error: Database is not open.";
-        return false;
+        return 0;
     }
 
     QSqlQuery query;
@@ -180,19 +188,21 @@ bool DatabaseManager::addEstimate(int ticketID, const QString &description, doub
     if (!query.exec())
     {
         qDebug() << "Error: Failed to add estimate:" << query.lastError().text();
-        return false;
+        return 0;
     }
 
+    int estimateID = query.lastInsertId().toInt();
+
     qDebug() << "Estimate added successfully.";
-    return true;
+    return estimateID;
 }
 
-bool DatabaseManager::addParts(int ticketID, const QString &description, double amount, double unitPrice)
+int DatabaseManager::addParts(int ticketID, const QString &description, double amount, double unitPrice)
 {
     if (!m_db.isOpen())
     {
         qDebug() << "Error: Database is not open.";
-        return false;
+        return 0;
     }
 
     QSqlQuery query;
@@ -206,19 +216,21 @@ bool DatabaseManager::addParts(int ticketID, const QString &description, double 
     if (!query.exec())
     {
         qDebug() << "Error: Failed to add parts:" << query.lastError().text();
-        return false;
+        return 0;
     }
 
+    int partID = query.lastInsertId().toInt();
+
     qDebug() << "Parts added successfully.";
-    return true;
+    return partID;
 }
 
-bool DatabaseManager::addWorkLogEntry(int ticketID, int employeeID, const QDateTime &startTime, const QDateTime &endTime)
+int DatabaseManager::addWorkLogEntry(int ticketID, int employeeID, const QDateTime &startTime, const QDateTime &endTime)
 {
     if (!m_db.isOpen())
     {
         qDebug() << "Error: Database is not open.";
-        return false;
+        return 0;
     }
 
     QSqlQuery query;
@@ -232,11 +244,13 @@ bool DatabaseManager::addWorkLogEntry(int ticketID, int employeeID, const QDateT
     if (!query.exec())
     {
         qDebug() << "Error: Failed to add work log entry:" << query.lastError().text();
-        return false;
+        return 0;
     }
 
+    int workLogID = query.lastInsertId().toInt();
+
     qDebug() << "Work log entry added successfully.";
-    return true;
+    return workLogID;
 }
 
 bool DatabaseManager::open()

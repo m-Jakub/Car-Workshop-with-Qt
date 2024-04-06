@@ -2,7 +2,7 @@
 #define EMPLOYEES_H
 
 #include "database_manager.h"
-#include "addemployee.h"
+#include "add_employee_dialog.h"
 #include <QWidget>
 
 namespace Ui
@@ -21,15 +21,20 @@ public:
     void populateTable();
 
 private slots:
+    // ==================================================   
+    // IMPLEMENT ENABLING AND DISABLING OF DELETE BUTTON
+    // ==================================================   
     void on_Delete_clicked();
     void on_Add_clicked();
+    // ==================================================   
     // bool eventFilter(QObject *watched, QEvent *event);
+    // ==================================================   
 
 private:
     Ui::Employees *ui;
     DatabaseManager *dbManager; // Pointer to the database
     QHash<int, int> rowToIdMap; // Maps row number to employee ID
-    AddEmployee *addEmployeeWindow = nullptr;
+    AddEmployeeDialog *addEmployeeWindow = nullptr;
 };
 
 #endif // EMPLOYEES_H

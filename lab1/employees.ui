@@ -18,12 +18,12 @@
     <rect>
      <x>30</x>
      <y>310</y>
-     <width>80</width>
+     <width>121</width>
      <height>24</height>
     </rect>
    </property>
    <property name="text">
-    <string>Add</string>
+    <string>Add New Employee</string>
    </property>
   </widget>
   <widget class="QTableWidget" name="tableWidget">
@@ -57,21 +57,21 @@
     <item>
      <widget class="QPushButton" name="pushButton_3">
       <property name="text">
-       <string>PushButton</string>
+       <string>Show Calendar</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QPushButton" name="pushButton_4">
       <property name="text">
-       <string>PushButton</string>
+       <string>Show Tickets</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QPushButton" name="pushButton_5">
       <property name="text">
-       <string>PushButton</string>
+       <string>Update</string>
       </property>
      </widget>
     </item>
@@ -83,6 +83,19 @@
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>60</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Operations:</string>
+   </property>
   </widget>
  </widget>
  <resources/>

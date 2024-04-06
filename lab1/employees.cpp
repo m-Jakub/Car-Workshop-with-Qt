@@ -59,68 +59,59 @@ Employees::~Employees()
     delete ui;
 }
 
-// void Employees::on_Delete_clicked()
-// {
-
-//     int selectedRow = ui->tableWidget->currentRow();
-
-//     if (selectedRow >= 0)
-//     {
-//         // Retrieving the ID using the row index
-//         int employeeId = rowToIdMap.value(selectedRow);
-
-//         // Removing the employee from the database using the DatabaseManager object
-//         dbManager->removeEmployee(employeeId);
-
-//         ui->tableWidget->removeRow(selectedRow);
-
-//         // Removing the ID from the rowToIdMap
-//         rowToIdMap.remove(selectedRow);
-//     }
-// }
-
 void Employees::on_Delete_clicked()
 {
     int selectedRow = ui->tableWidget->currentRow();
 
     if (selectedRow >= 0)
     {
-        // Retrieve the name using the row index
+        // Retrieving the name using the row index
         QString employeeName = ui->tableWidget->item(selectedRow, 0)->text();
 
-        // Instantiate the DeleteConfirmationDialog with the employee name
+        // Instantiating the DeleteConfirmationDialog with the employee name
         DeleteConfirmationDialog confirmationDialog(employeeName);
 
-        // Connect the deleteConfirmed() signal to a slot that performs deletion
-        connect(&confirmationDialog, &DeleteConfirmationDialog::deleteConfirmed, this, [=]() {
+        // Connecting the deleteConfirmed() signal to a slot that performs deletion
+        // Lambda function is executed when the deleteConfirmed signal is emitted
+        connect(&confirmationDialog, &DeleteConfirmationDialog::deleteConfirmed, this, [=]()
+                {
             // Retrieve the ID using the row index
             int employeeId = rowToIdMap.value(selectedRow);
 
-            // Remove the employee from the database using the DatabaseManager object
+            // Removing the employee from the database using the DatabaseManager object
             dbManager->removeEmployee(employeeId);
 
-            // Remove the row from the tableWidget
+            // Removing the row from the tableWidget
             ui->tableWidget->removeRow(selectedRow);
 
-            // Remove the ID from the rowToIdMap
-            rowToIdMap.remove(selectedRow);
-        });
+            // Removing the ID from the rowToIdMap
+            rowToIdMap.remove(selectedRow); });
 
-        // Display the confirmation dialog
+        // Displaying the confirmation dialog
         confirmationDialog.exec();
     }
 }
 
 void Employees::on_Add_clicked()
 {
-    if (!addEmployeeWindow)
-        addEmployeeWindow = new AddEmployee(dbManager);
+    // Instantiating the AddEmployeeDialog
+    addEmployeeWindow = new AddEmployeeDialog(dbManager);
 
-    if (addEmployeeWindow && addEmployeeWindow->isMinimized())
-        addEmployeeWindow->showNormal();
-    else
-        addEmployeeWindow->show();
-    addEmployeeWindow->raise();
-    addEmployeeWindow->activateWindow();
+    // Connecting the addEmployee signal to a slot that adds the employee to the table
+    connect(addEmployeeWindow, &AddEmployeeDialog::addEmployee, this, [=](const QString &name, double hourlyRate)
+            {
+        // Inserting the employee into the database
+        int id = dbManager->addEmployee(name, hourlyRate);
+
+        // Inserting the employee into the tableWidget
+        int row = ui->tableWidget->rowCount();
+        ui->tableWidget->insertRow(row);
+        ui->tableWidget->setItem(row, 0, new QTableWidgetItem(name));
+        ui->tableWidget->setItem(row, 1, new QTableWidgetItem(QString::number(hourlyRate)));
+
+        // Storing the ID in the rowToIdMap
+        rowToIdMap[row] = id; });
+
+    // Displaying the addEmployeeWindow
+    addEmployeeWindow->exec();
 }
-

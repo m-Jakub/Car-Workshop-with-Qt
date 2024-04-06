@@ -12,7 +12,7 @@ CONFIG += debug
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    addemployee.cpp \
+    add_employee_dialog.cpp \
     database_manager.cpp \
     delete_confirmation_dialog.cpp \
     employees.cpp \
@@ -21,7 +21,7 @@ SOURCES += \
     tickets.cpp
 
 HEADERS += \
-    addemployee.h \
+    add_employee_dialog.h \
     database_manager.h \
     delete_confirmation_dialog.h \
     employees.h \
@@ -29,7 +29,7 @@ HEADERS += \
     tickets.h
 
 FORMS += \
-    addemployee.ui \
+    add_employee_dialog.ui \
     delete_confirmation_dialog.ui \
     employees.ui \
     mainwindow.ui \

@@ -86,6 +86,32 @@ bool DatabaseManager::updateEmployee(int employeeID, const QString &name, double
     return true;
 }
 
+QString DatabaseManager::getEmployeeName(int employeeID)
+{
+    if (!m_db.isOpen())
+    {
+        qDebug() << "Error: Database is not open.";
+        return "";
+    }
+
+    QSqlQuery query;
+    query.prepare("SELECT Name FROM Employees WHERE EmployeeID = :employeeID");
+    query.bindValue(":employeeID", employeeID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to get employee name:" << query.lastError().text();
+        return "";
+    }
+
+    if (query.next())
+    {
+        return query.value(0).toString();
+    }
+
+    return "";
+}
+
 bool DatabaseManager::removeAllEmployees()
 {
     if (!m_db.isOpen())

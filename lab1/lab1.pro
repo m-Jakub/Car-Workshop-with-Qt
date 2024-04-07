@@ -13,6 +13,7 @@ CONFIG += debug
 
 SOURCES += \
     add_employee_dialog.cpp \
+    add_ticket_dialog.cpp \
     database_manager.cpp \
     delete_confirmation_dialog.cpp \
     employees.cpp \
@@ -22,6 +23,7 @@ SOURCES += \
 
 HEADERS += \
     add_employee_dialog.h \
+    add_ticket_dialog.h \
     database_manager.h \
     delete_confirmation_dialog.h \
     employees.h \
@@ -30,6 +32,7 @@ HEADERS += \
 
 FORMS += \
     add_employee_dialog.ui \
+    add_ticket_dialog.ui \
     delete_confirmation_dialog.ui \
     employees.ui \
     mainwindow.ui \

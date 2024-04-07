@@ -3,7 +3,8 @@
 #include "ui_add_employee_dialog.h"
 #include "database_manager.h"
 
-AddEmployeeDialog::AddEmployeeDialog(DatabaseManager *dbManager, const QString &name, double hourlyRate, QWidget *parent) : QDialog(parent), ui(new Ui::AddEmployeeDialog), dbManager(dbManager)
+AddEmployeeDialog::AddEmployeeDialog(DatabaseManager *dbManager, const QString &name, double hourlyRate, QWidget *parent)
+    : QDialog(parent), ui(new Ui::AddEmployeeDialog), dbManager(dbManager)
 {
     ui->setupUi(this);
     setWindowTitle("Car Workshop Management System");

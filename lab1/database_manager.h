@@ -16,6 +16,7 @@ public:
     int addEmployee(const QString& name, double hourlyRate); // Returns the ID of the newly added employee
     bool removeEmployee(int employeeID);
     bool updateEmployee(int employeeID, const QString& name, double hourlyRate);
+    QString getEmployeeName(int employeeID);
     bool removeAllEmployees();
     int addCalendarEntry(int employeeID, const QDateTime& startTime, const QDateTime& endTime, const QString& status, const QString& description);
     int addTicket(const QString& vehicleBrand, const QString& vehicleModel, const QString& registrationID, const QString& problemDescription, int assignedEmployeeID, double pricePaidByClient, const QString& state);

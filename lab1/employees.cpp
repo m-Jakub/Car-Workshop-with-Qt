@@ -13,6 +13,11 @@ Employees::Employees(DatabaseManager *dbManager, QWidget *parent)
     populateTable();
 }
 
+Employees::~Employees()
+{
+    delete ui;
+}
+
 void Employees::setupTable()
 {
     // Setting column names
@@ -30,6 +35,9 @@ void Employees::setupTable()
 
     // Setting the window title
     setWindowTitle("Employees - Car Workshop Management System");
+
+    // Making the table read-only
+    ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 void Employees::populateTable()
@@ -52,11 +60,6 @@ void Employees::populateTable()
         // Storing the ID in the rowToIdMap
         rowToIdMap[row] = id;
     }
-}
-
-Employees::~Employees()
-{
-    delete ui;
 }
 
 void Employees::on_deleteButton_clicked()
@@ -95,7 +98,8 @@ void Employees::on_deleteButton_clicked()
 void Employees::on_addButton_clicked()
 {
     // Instantiating the AddEmployeeDialog
-    dialogWindow = new AddEmployeeDialog(dbManager);
+    if (!dialogWindow)
+        dialogWindow = new AddEmployeeDialog(dbManager);
 
     // Connecting the addEmployee signal to a slot that adds the employee to the table
     connect(dialogWindow, &AddEmployeeDialog::addEmployee, this, [=](const QString &name, double hourlyRate)

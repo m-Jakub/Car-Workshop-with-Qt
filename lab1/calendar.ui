@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Calendar</class>
+ <widget class="QDialog" name="Calendar">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>808</width>
+    <height>469</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QDialogButtonBox" name="buttonBox">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>140</y>
+     <width>81</width>
+     <height>241</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="tableWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>60</y>
+     <width>641</width>
+     <height>391</height>
+    </rect>
+   </property>
+   <property name="rowCount">
+    <number>12</number>
+   </property>
+   <property name="columnCount">
+    <number>6</number>
+   </property>
+   <row>
+    <property name="text">
+     <string>8:00</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>9:00</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>10:00</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>11:00</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>12:00</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>13:00</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>14:00</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>15:00</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>16:00</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>17:00</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>18:00</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>19:00</string>
+    </property>
+   </row>
+   <column>
+    <property name="text">
+     <string>Mon</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Tue</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Wed</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Thu</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Fri</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Sat</string>
+    </property>
+   </column>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>Calendar</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Calendar</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

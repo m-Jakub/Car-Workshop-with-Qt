@@ -11,6 +11,7 @@ Employees::Employees(DatabaseManager *dbManager, QWidget *parent)
 
     setupTable();
     populateTable();
+    populateTable();
 }
 
 Employees::~Employees()
@@ -42,6 +43,9 @@ void Employees::setupTable()
 
 void Employees::populateTable()
 {
+    ui->tableWidget->clearContents();
+    ui->tableWidget->setRowCount(0);
+
     QSqlQuery query("SELECT EmployeeId, Name, HourlyRate FROM Employees");
     while (query.next())
     {
@@ -88,7 +92,9 @@ void Employees::on_deleteButton_clicked()
             ui->tableWidget->removeRow(selectedRow);
 
             // Removing the ID from the rowToIdMap
-            rowToIdMap.remove(selectedRow); });
+            rowToIdMap.remove(selectedRow); 
+            
+            emit employeesUpdated();});
 
         // Displaying the confirmation dialog
         confirmationDialog.exec();
@@ -113,7 +119,9 @@ void Employees::on_addButton_clicked()
         ui->tableWidget->setItem(row, 1, new QTableWidgetItem(QString::number(hourlyRate)));
 
         // Storing the ID in the rowToIdMap
-        rowToIdMap[row] = id; });
+        rowToIdMap[row] = id; 
+        
+        emit employeesUpdated();});
 
     // Displaying the addEmployeeWindow
     dialogWindow->exec();
@@ -136,8 +144,19 @@ void Employees::on_updateButton_clicked()
         // Inserting the employee into the tableWidget
         int row = ui->tableWidget->rowCount();
         ui->tableWidget->setItem(selectedRow, 0, new QTableWidgetItem(name));
-        ui->tableWidget->setItem(selectedRow, 1, new QTableWidgetItem(QString::number(hourlyRate))); });
+        ui->tableWidget->setItem(selectedRow, 1, new QTableWidgetItem(QString::number(hourlyRate))); 
+        
+        emit employeesUpdated();});
 
     // Displaying the addEmployeeWindow
     dialogWindow->exec();
+}
+
+void Employees::on_calendarButton_clicked()
+{
+    // Instantiating the CalendarDialog
+    calendar = new Calendar(dbManager);
+
+    // Displaying the calendarDialog
+    calendar->exec();
 }

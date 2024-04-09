@@ -24,7 +24,14 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QPushButton" name="showTicketsButton">
+     <widget class="QPushButton" name="assignEmployeeButton">
+      <property name="text">
+       <string>Assign Employee</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="estimateButton">
       <property name="text">
        <string>Estimate</string>
       </property>
@@ -45,7 +52,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="workButton">
+     <widget class="QPushButton" name="workLogButton">
       <property name="text">
        <string>Work Log</string>
       </property>

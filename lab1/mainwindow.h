@@ -21,15 +21,15 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(DatabaseManager *dbmanager, QWidget *parent = nullptr);
     ~MainWindow();
+    void updateEmployeesTable();
+    void updateTicketsTable();
 
 protected:
     void closeEvent(QCloseEvent *event) override;
 
 private slots:
     void on_Exit_clicked();
-
     void on_Employees_clicked();
-
     void on_Tickets_clicked();
 
 private:

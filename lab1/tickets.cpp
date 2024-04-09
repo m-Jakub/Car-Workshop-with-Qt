@@ -48,6 +48,9 @@ void Tickets::setupTable()
 
 void Tickets::populateTable()
 {
+    ui->tableWidget->clearContents();
+    ui->tableWidget->setRowCount(0);
+
     QSqlQuery query("SELECT TicketId, VehicleBrand, VehicleModel, RegistrationID, ProblemDescription, AssignedEmployeeID, PricePaidByClient, State FROM Tickets");
     while (query.next())
     {
@@ -100,7 +103,9 @@ void Tickets::on_deleteButton_clicked()
             int id = rowToIdMap.value(selectedRow);
             dbManager->removeTicket(id);
             ui->tableWidget->removeRow(selectedRow);
-            rowToIdMap.remove(selectedRow); });
+            rowToIdMap.remove(selectedRow); 
+            
+            emit ticketsUpdated();});
 
         confirmationDialog.exec();
     }
@@ -127,7 +132,9 @@ void Tickets::on_addButton_clicked()
         ui->tableWidget->setItem(row, 6, new QTableWidgetItem(QString::number(0)));
 
         // Storing the ID in the rowToIdMap
-        rowToIdMap[row] = id; });
+        rowToIdMap[row] = id; 
+
+        emit ticketsUpdated(); });
 
     dialogWindow->exec();
 }
@@ -153,7 +160,9 @@ void Tickets::on_updateButton_clicked()
         ui->tableWidget->item(selectedRow, 1)->setText(brand);
         ui->tableWidget->item(selectedRow, 2)->setText(model);
         ui->tableWidget->item(selectedRow, 3)->setText(registration);
-        ui->tableWidget->item(selectedRow, 4)->setText(problemDescription); });
+        ui->tableWidget->item(selectedRow, 4)->setText(problemDescription); 
+        
+        emit ticketsUpdated();});
 
     dialogWindow->exec();
 }

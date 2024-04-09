@@ -30,6 +30,22 @@ void MainWindow::closeEvent(QCloseEvent *event)
     QMainWindow::closeEvent(event);
 }
 
+void MainWindow::updateEmployeesTable()
+{
+    if (employeesWindow)
+    {
+        employeesWindow->populateTable();
+    }
+}
+
+void MainWindow::updateTicketsTable()
+{
+    if (ticketsWindow)
+    {
+        ticketsWindow->populateTable();
+    }
+}
+
 void MainWindow::on_Exit_clicked()
 {
     QWidgetList topLevelWidgets = QApplication::topLevelWidgets();
@@ -44,7 +60,10 @@ void MainWindow::on_Exit_clicked()
 void MainWindow::on_Employees_clicked()
 {
     if (!employeesWindow)
+    {
         employeesWindow = new Employees(dbManager);
+        connect(employeesWindow, &Employees::employeesUpdated, this, &MainWindow::updateTicketsTable);
+    }
 
     if (employeesWindow && employeesWindow->isMinimized())
         employeesWindow->showNormal();
@@ -57,7 +76,10 @@ void MainWindow::on_Employees_clicked()
 void MainWindow::on_Tickets_clicked()
 {
     if (!ticketsWindow)
+    {
         ticketsWindow = new Tickets(dbManager);
+        connect(ticketsWindow, &Tickets::ticketsUpdated, this, &MainWindow::updateEmployeesTable);
+    }
 
     if (ticketsWindow && ticketsWindow->isMinimized())
         ticketsWindow->showNormal();

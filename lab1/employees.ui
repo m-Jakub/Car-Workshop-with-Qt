@@ -55,7 +55,7 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QPushButton" name="showCalendarButton">
+     <widget class="QPushButton" name="calendarButton">
       <property name="text">
        <string>Show Calendar</string>
       </property>

@@ -3,6 +3,7 @@
 
 #include "database_manager.h"
 #include "add_employee_dialog.h"
+#include "calendar.h"
 #include <QWidget>
 
 namespace Ui
@@ -20,6 +21,9 @@ public:
     void setupTable();
     void populateTable();
 
+signals:
+    void employeesUpdated();
+
 private slots:
     // ==================================================   
     // IMPLEMENT ENABLING AND DISABLING OF DELETE BUTTON
@@ -27,12 +31,15 @@ private slots:
     void on_deleteButton_clicked();
     void on_addButton_clicked();
     void on_updateButton_clicked();
+    void on_calendarButton_clicked();
 
 private:
     Ui::Employees *ui;
     DatabaseManager *dbManager; // Pointer to the database
     QHash<int, int> rowToIdMap; // Maps row number to employee ID
     AddEmployeeDialog *dialogWindow = nullptr;
+    Calendar *calendar = nullptr;
+
 };
 
 #endif // EMPLOYEES_H

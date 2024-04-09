@@ -72,12 +72,12 @@
     <item>
      <widget class="QLabel" name="Label_3">
       <property name="text">
-       <string>Assigned Employee</string>
+       <string>Problem Description</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="employeeLineEdit"/>
+     <widget class="QLineEdit" name="problemLineEdit"/>
     </item>
    </layout>
   </widget>

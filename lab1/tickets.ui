@@ -99,9 +99,8 @@
     <number>0</number>
    </property>
    <property name="columnCount">
-    <number>7</number>
+    <number>6</number>
    </property>
-   <column/>
    <column/>
    <column/>
    <column/>

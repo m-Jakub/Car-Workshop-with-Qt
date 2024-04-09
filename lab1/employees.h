@@ -26,11 +26,6 @@ private slots:
     // ==================================================   
     void on_deleteButton_clicked();
     void on_addButton_clicked();
-    // ==================================================   
-    // bool eventFilter(QObject *watched, QEvent *event);
-    // ==================================================
-
-
     void on_updateButton_clicked();
 
 private:

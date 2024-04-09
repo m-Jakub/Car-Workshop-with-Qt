@@ -24,16 +24,16 @@ void Tickets::setupTable()
 
     // Setting column names
     QStringList headerLabels;
-    headerLabels << "Brand"
+    headerLabels << "State"
+                 << "Brand"
                  << "Model"
                  << "Registration"
                  << "Problem Description"
-                 << "Assigned Employee"
-                 << "Price Paid"
-                 << "State";
+                 << "Assigned Employee";
     ui->tableWidget->setHorizontalHeaderLabels(headerLabels);
 
     // Resizing columns
+    ui->tableWidget->setColumnWidth(4, 150);
     ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
 
     // Setting selection behavior to select the whole row
@@ -58,7 +58,7 @@ void Tickets::populateTable()
         QString problemDescription = query.value(4).toString();
         int assignedEmployeeID = query.value(5).toInt();
         QString assignedEmployeeName = dbManager->getEmployeeName(assignedEmployeeID);
-        double pricePaid = query.value(6).toDouble();
+        QString pricePaidByClient = query.value(6).toString();
         QString state = query.value(7).toString();
 
         QTableWidgetItem *brandItem = new QTableWidgetItem(brand);
@@ -66,71 +66,57 @@ void Tickets::populateTable()
         QTableWidgetItem *registrationItem = new QTableWidgetItem(registration);
         QTableWidgetItem *problemDescriptionItem = new QTableWidgetItem(problemDescription);
         QTableWidgetItem *assignedEmployeeItem = new QTableWidgetItem(assignedEmployeeName);
-        QTableWidgetItem *pricePaidItem = new QTableWidgetItem(QString::number(pricePaid));
+        QTableWidgetItem *pricePaidItem = new QTableWidgetItem(pricePaidByClient);
         QTableWidgetItem *stateItem = new QTableWidgetItem(state);
 
         int row = ui->tableWidget->rowCount();
         ui->tableWidget->insertRow(row);
-        ui->tableWidget->setItem(row, 0, brandItem);
-        ui->tableWidget->setItem(row, 1, modelItem);
-        ui->tableWidget->setItem(row, 2, registrationItem);
-        ui->tableWidget->setItem(row, 3, problemDescriptionItem);
-        ui->tableWidget->setItem(row, 4, assignedEmployeeItem);
-        ui->tableWidget->setItem(row, 5, pricePaidItem);
-        ui->tableWidget->setItem(row, 6, stateItem);
+        ui->tableWidget->setItem(row, 0, stateItem);
+        ui->tableWidget->setItem(row, 1, brandItem);
+        ui->tableWidget->setItem(row, 2, modelItem);
+        ui->tableWidget->setItem(row, 3, registrationItem);
+        ui->tableWidget->setItem(row, 4, problemDescriptionItem);
+        ui->tableWidget->setItem(row, 5, assignedEmployeeItem);
 
         // Storing the ID in the rowToIdMap
         rowToIdMap[row] = id;
     }
 }
-// oid Employees::on_addButton_clicked()
-// {
-//     // Instantiating the AddEmployeeDialog
-//     if (!dialogWindow)
-//         dialogWindow = new AddEmployeeDialog(dbManager);
 
-//     // Connecting the addEmployee signal to a slot that adds the employee to the table
-//     connect(dialogWindow, &AddEmployeeDialog::addEmployee, this, [=](const QString &name, double hourlyRate)
-//             {
-//         // Inserting the employee into the database
-//         int id = dbManager->addEmployee(name, hourlyRate);
+void Tickets::on_deleteButton_clicked()
+{
+    // int selectedRow = ui->tableWidget->currentRow();
 
-//         // Inserting the employee into the tableWidget
-//         int row = ui->tableWidget->rowCount();
-//         ui->tableWidget->insertRow(row);
-//         ui->tableWidget->setItem(row, 0, new QTableWidgetItem(name));
-//         ui->tableWidget->setItem(row, 1, new QTableWidgetItem(QString::number(hourlyRate)));
-
-//         // Storing the ID in the rowToIdMap
-//         rowToIdMap[row] = id; });
-
-//     // Displaying the addEmployeeWindow
-//     dialogWindow->exec();
-// }
+    // if (selectedRow >= 0)
+    // {
+    //     QString 
+    // }
+}
 
 void Tickets::on_addButton_clicked()
 {
     if (!dialogWindow)
         dialogWindow = new AddTicketDialog(dbManager);
 
-    connect(dialogWindow, &AddTicketDialog::addTicket, this, [=](const QString &brand, const QString &model, const QString &registration, int assignedEmployeeID)
+    connect(dialogWindow, &AddTicketDialog::addTicket, this, [=](const QString &brand, const QString &model, const QString &registration, const QString assignedEmployee)
             {
         // Inserting the ticket into the database
-        int id = dbManager->addTicket(brand, model, registration, "problemDescription", assignedEmployeeID, 0, "state");
+        int id = dbManager->addTicket(brand, model, registration, "problemDescription", 0,  0, "created");
 
         // Inserting the ticket into the tableWidget
         int row = ui->tableWidget->rowCount();
         ui->tableWidget->insertRow(row);
-        ui->tableWidget->setItem(row, 0, new QTableWidgetItem(brand));
-        ui->tableWidget->setItem(row, 1, new QTableWidgetItem(model));
-        ui->tableWidget->setItem(row, 2, new QTableWidgetItem(registration));
-        ui->tableWidget->setItem(row, 3, new QTableWidgetItem("problemDescription"));
-        ui->tableWidget->setItem(row, 4, new QTableWidgetItem(dbManager->getEmployeeName(assignedEmployeeID)));
-        ui->tableWidget->setItem(row, 5, new QTableWidgetItem(QString::number(0)));
-        ui->tableWidget->setItem(row, 6, new QTableWidgetItem("state"));
+        ui->tableWidget->setItem(row, 0, new QTableWidgetItem("created"));
+        ui->tableWidget->setItem(row, 1, new QTableWidgetItem(brand));
+        ui->tableWidget->setItem(row, 2, new QTableWidgetItem(model));
+        ui->tableWidget->setItem(row, 3, new QTableWidgetItem(registration));
+        ui->tableWidget->setItem(row, 4, new QTableWidgetItem("problemDescription"));
+        ui->tableWidget->setItem(row, 5, new QTableWidgetItem(""));
+        ui->tableWidget->setItem(row, 6, new QTableWidgetItem(QString::number(0)));
 
         // Storing the ID in the rowToIdMap
         rowToIdMap[row] = id; });
 
     dialogWindow->exec();
 }
+

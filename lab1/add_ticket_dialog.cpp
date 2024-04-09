@@ -23,7 +23,7 @@ AddTicketDialog::AddTicketDialog(DatabaseManager *dbManager, const QString &bran
     }
     if (!assignedEmployee.isEmpty())
     {
-        ui->employeeLineEdit->setText(assignedEmployee);
+        ui->problemLineEdit->setText(assignedEmployee);
     }
 }
 
@@ -38,7 +38,7 @@ void AddTicketDialog::on_buttonBox_accepted()
     QString model = ui->modelLineEdit->text();
     QString registrationID = ui->registrationLineEdit->text();
     // QString problemDescription = ui->problemDescriptionTextEdit->toPlainText();
-    QString assignedEmployeeID = ui->employeeLineEdit->text();
+    QString assignedEmployeeID = ui->problemLineEdit->text();
     // double pricePaidByClient = ui->pricePaidDoubleSpinBox->value();
     // QString state = ui->stateComboBox->currentText();
 

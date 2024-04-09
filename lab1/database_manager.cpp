@@ -192,6 +192,57 @@ int DatabaseManager::addTicket(const QString &vehicleBrand, const QString &vehic
     return ticketID;
 }
 
+bool DatabaseManager::removeTicket(int ticketID)
+{
+    if (!m_db.isOpen())
+    {
+        qDebug() << "Error: Database is not open.";
+        return false;
+    }
+
+    QSqlQuery query;
+    query.prepare("DELETE FROM Tickets WHERE TicketID = :ticketID");
+    query.bindValue(":ticketID", ticketID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to remove ticket:" << query.lastError().text();
+        return false;
+    }
+
+    qDebug() << "Ticket removed successfully.";
+    return true;
+}
+
+bool DatabaseManager::updateTicket(int ticketID, const QString &vehicleBrand, const QString &vehicleModel, const QString &registrationID, const QString &problemDescription, int assignedEmployeeID, double pricePaidByClient, const QString &state)
+{
+    if (!m_db.isOpen())
+    {
+        qDebug() << "Error: Database is not open.";
+        return false;
+    }
+
+    QSqlQuery query;
+    query.prepare("UPDATE Tickets SET VehicleBrand = :vehicleBrand, VehicleModel = :vehicleModel, RegistrationID = :registrationID, ProblemDescription = :problemDescription, AssignedEmployeeID = :assignedEmployeeID, State = :state, PricePaidByClient = :pricePaidByClient WHERE TicketID = :ticketID");
+    query.bindValue(":vehicleBrand", vehicleBrand);
+    query.bindValue(":vehicleModel", vehicleModel);
+    query.bindValue(":registrationID", registrationID);
+    query.bindValue(":problemDescription", problemDescription);
+    query.bindValue(":assignedEmployeeID", assignedEmployeeID);
+    query.bindValue(":state", state);
+    query.bindValue(":pricePaidByClient", pricePaidByClient);
+    query.bindValue(":ticketID", ticketID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to update ticket:" << query.lastError().text();
+        return false;
+    }
+
+    qDebug() << "Ticket updated successfully.";
+    return true;
+}
+
 int DatabaseManager::addRepairSchedule(int ticketID, int employeeID, const QDateTime &startTime, const QDateTime &endTime)
 {
     if (!m_db.isOpen())

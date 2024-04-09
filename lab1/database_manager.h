@@ -20,6 +20,8 @@ public:
     bool removeAllEmployees();
     int addCalendarEntry(int employeeID, const QDateTime& startTime, const QDateTime& endTime, const QString& status, const QString& description);
     int addTicket(const QString& vehicleBrand, const QString& vehicleModel, const QString& registrationID, const QString& problemDescription, int assignedEmployeeID, double pricePaidByClient, const QString& state);
+    bool removeTicket(int ticketID);
+    bool updateTicket(int ticketID, const QString& vehicleBrand, const QString& vehicleModel, const QString& registrationID, const QString& problemDescription, int assignedEmployeeID, double pricePaidByClient, const QString& state);
     int addRepairSchedule(int ticketID, int employeeID, const QDateTime& startTime, const QDateTime& endTime);
     int addEstimate(int ticketID, const QString& description, double expectedCost, bool acceptedByClient);
     int addParts(int ticketID, const QString& description, double amount, double unitPrice);

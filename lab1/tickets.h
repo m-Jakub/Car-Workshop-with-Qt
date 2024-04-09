@@ -23,6 +23,7 @@ public:
 private slots:
     void on_deleteButton_clicked();
     void on_addButton_clicked();
+    void on_updateButton_clicked();
 
 private:
     Ui::Tickets *ui;

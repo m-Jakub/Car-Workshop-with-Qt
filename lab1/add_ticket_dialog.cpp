@@ -38,11 +38,11 @@ void AddTicketDialog::on_buttonBox_accepted()
     QString model = ui->modelLineEdit->text();
     QString registrationID = ui->registrationLineEdit->text();
     // QString problemDescription = ui->problemDescriptionTextEdit->toPlainText();
-    QString assignedEmployeeID = ui->problemLineEdit->text();
+    QString problemDescription = ui->problemLineEdit->text();
     // double pricePaidByClient = ui->pricePaidDoubleSpinBox->value();
     // QString state = ui->stateComboBox->currentText();
 
-    emit addTicket(brand, model, registrationID, assignedEmployeeID);
+    emit addTicket(brand, model, registrationID, problemDescription);
 
     close();
 }

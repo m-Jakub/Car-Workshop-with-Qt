@@ -85,23 +85,35 @@ void Tickets::populateTable()
 
 void Tickets::on_deleteButton_clicked()
 {
-    // int selectedRow = ui->tableWidget->currentRow();
+    int selectedRow = ui->tableWidget->currentRow();
 
-    // if (selectedRow >= 0)
-    // {
-    //     QString 
-    // }
+    if (selectedRow >= 0)
+    {
+        QString Brand = ui->tableWidget->item(selectedRow, 1)->text();
+        QString Model = ui->tableWidget->item(selectedRow, 2)->text();
+        QString Registration = ui->tableWidget->item(selectedRow, 3)->text();
+
+        DeleteConfirmationDialog confirmationDialog(Brand + " " + Model + " " + Registration);
+
+        connect(&confirmationDialog, &DeleteConfirmationDialog::deleteConfirmed, this, [=]()
+                {
+            int id = rowToIdMap.value(selectedRow);
+            dbManager->removeTicket(id);
+            ui->tableWidget->removeRow(selectedRow);
+            rowToIdMap.remove(selectedRow); });
+
+        confirmationDialog.exec();
+    }
 }
 
 void Tickets::on_addButton_clicked()
 {
-    if (!dialogWindow)
-        dialogWindow = new AddTicketDialog(dbManager);
+    dialogWindow = new AddTicketDialog(dbManager);
 
-    connect(dialogWindow, &AddTicketDialog::addTicket, this, [=](const QString &brand, const QString &model, const QString &registration, const QString assignedEmployee)
+    connect(dialogWindow, &AddTicketDialog::addTicket, this, [=](const QString &brand, const QString &model, const QString &registration, const QString problemDescription)
             {
         // Inserting the ticket into the database
-        int id = dbManager->addTicket(brand, model, registration, "problemDescription", 0,  0, "created");
+        int id = dbManager->addTicket(brand, model, registration, problemDescription, 0,  0, "created");
 
         // Inserting the ticket into the tableWidget
         int row = ui->tableWidget->rowCount();
@@ -110,7 +122,7 @@ void Tickets::on_addButton_clicked()
         ui->tableWidget->setItem(row, 1, new QTableWidgetItem(brand));
         ui->tableWidget->setItem(row, 2, new QTableWidgetItem(model));
         ui->tableWidget->setItem(row, 3, new QTableWidgetItem(registration));
-        ui->tableWidget->setItem(row, 4, new QTableWidgetItem("problemDescription"));
+        ui->tableWidget->setItem(row, 4, new QTableWidgetItem(problemDescription));
         ui->tableWidget->setItem(row, 5, new QTableWidgetItem(""));
         ui->tableWidget->setItem(row, 6, new QTableWidgetItem(QString::number(0)));
 
@@ -120,3 +132,28 @@ void Tickets::on_addButton_clicked()
     dialogWindow->exec();
 }
 
+void Tickets::on_updateButton_clicked()
+{
+    int selectedRow = ui->tableWidget->currentRow();
+
+    dialogWindow = new AddTicketDialog(dbManager, ui->tableWidget->item(selectedRow, 1)->text(), ui->tableWidget->item(selectedRow, 2)->text(), ui->tableWidget->item(selectedRow, 3)->text(), ui->tableWidget->item(selectedRow, 4)->text());
+
+    connect(dialogWindow, &AddTicketDialog::addTicket, this, [=](const QString &brand, const QString &model, const QString &registration, const QString problemDescription)
+            {
+        int ticketId = rowToIdMap.value(selectedRow);
+
+        // Retreiving assigned employee id, price paid by client and state
+        QSqlQuery query("SELECT AssignedEmployeeID, PricePaidByClient, State FROM Tickets WHERE TicketId = " + QString::number(ticketId));
+        QString assignedEmployeeID = query.value(0).toString();
+        QString pricePaidByClient = query.value(1).toString();
+        QString state = query.value(2).toString();
+
+        dbManager->updateTicket(ticketId, brand, model, registration, problemDescription, assignedEmployeeID.toInt(), pricePaidByClient.toDouble(), state);
+
+        ui->tableWidget->item(selectedRow, 1)->setText(brand);
+        ui->tableWidget->item(selectedRow, 2)->setText(model);
+        ui->tableWidget->item(selectedRow, 3)->setText(registration);
+        ui->tableWidget->item(selectedRow, 4)->setText(problemDescription); });
+
+    dialogWindow->exec();
+}

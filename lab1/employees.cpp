@@ -98,8 +98,7 @@ void Employees::on_deleteButton_clicked()
 void Employees::on_addButton_clicked()
 {
     // Instantiating the AddEmployeeDialog
-    if (!dialogWindow)
-        dialogWindow = new AddEmployeeDialog(dbManager);
+    dialogWindow = new AddEmployeeDialog(dbManager);
 
     // Connecting the addEmployee signal to a slot that adds the employee to the table
     connect(dialogWindow, &AddEmployeeDialog::addEmployee, this, [=](const QString &name, double hourlyRate)

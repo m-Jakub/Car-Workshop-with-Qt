@@ -25,6 +25,8 @@ public:
     bool updateTicketState(int ticketID, const QString& state);
     int addRepairSchedule(int ticketID, int employeeID, const QString& startHour, const QString& endHour, const QString& dayOfWeek);
     int addEstimate(int ticketID, const QString& description, double expectedCost, bool acceptedByClient);
+    bool updateEstimate(int ticketID, const QString& description, double expectedCost, bool acceptedByClient);
+    bool estimateExists(int ticketID);
     int addParts(int ticketID, const QString& description, double amount, double unitPrice);
     int addWorkLogEntry(int ticketID, int employeeID, const QString& startHour, const QString& endHour);
 

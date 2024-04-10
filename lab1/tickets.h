@@ -36,6 +36,8 @@ private slots:
 
     void on_stateComboBox_activated(int index);
 
+    void on_estimateButton_clicked();
+
 private:
     Ui::Tickets *ui;
     DatabaseManager *dbManager;

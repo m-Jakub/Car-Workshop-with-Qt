@@ -18,6 +18,7 @@ SOURCES += \
     database_manager.cpp \
     delete_confirmation_dialog.cpp \
     employees.cpp \
+    estimate.cpp \
     main.cpp \
     mainwindow.cpp \
     tickets.cpp
@@ -29,6 +30,7 @@ HEADERS += \
     database_manager.h \
     delete_confirmation_dialog.h \
     employees.h \
+    estimate.h \
     mainwindow.h \
     tickets.h
 
@@ -38,6 +40,7 @@ FORMS += \
     calendar.ui \
     delete_confirmation_dialog.ui \
     employees.ui \
+    estimate.ui \
     mainwindow.ui \
     tickets.ui
 

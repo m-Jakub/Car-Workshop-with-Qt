@@ -2,6 +2,7 @@
 #include "ui_tickets.h"
 #include "database_manager.h"
 #include "delete_confirmation_dialog.h"
+#include "estimate.h"
 #include <QSqlQuery>
 
 Tickets::Tickets(DatabaseManager *dbManager, QWidget *parent)
@@ -212,6 +213,19 @@ void Tickets::on_stateComboBox_activated(int index)
     {
         dbManager->updateTicketState(ticketID, text);
         ui->tableWidget->item(selectedRow, 0)->setText(text);
+    }
+}
+
+
+void Tickets::on_estimateButton_clicked()
+{
+    int selectedRow = ui->tableWidget->currentRow();
+    int ticketID = rowToIdMap.value(selectedRow);
+
+    if (ticketID != 0)
+    {
+        Estimate estimateDialog(dbManager, ticketID);
+        estimateDialog.exec();
     }
 }
 

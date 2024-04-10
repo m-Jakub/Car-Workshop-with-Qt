@@ -320,6 +320,57 @@ int DatabaseManager::addEstimate(int ticketID, const QString &description, doubl
     return estimateID;
 }
 
+bool DatabaseManager::updateEstimate(int ticketID, const QString &description, double expectedCost, bool acceptedByClient)
+{
+    if (!m_db.isOpen())
+    {
+        qDebug() << "Error: Database is not open.";
+        return false;
+    }
+
+    QSqlQuery query;
+    query.prepare("UPDATE Estimates SET Description = :description, ExpectedCost = :expectedCost, AcceptedByClient = :acceptedByClient WHERE TicketID = :ticketID");
+    query.bindValue(":description", description);
+    query.bindValue(":expectedCost", expectedCost);
+    query.bindValue(":acceptedByClient", acceptedByClient);
+    query.bindValue(":ticketID", ticketID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to update estimate:" << query.lastError().text();
+        return false;
+    }
+
+    qDebug() << "Estimate updated successfully.";
+    return true;
+}
+
+bool DatabaseManager::estimateExists(int ticketID)
+{
+    if (!m_db.isOpen())
+    {
+        qDebug() << "Error: Database is not open.";
+        return false;
+    }
+
+    QSqlQuery query;
+    query.prepare("SELECT COUNT(*) FROM Estimates WHERE TicketID = :ticketID");
+    query.bindValue(":ticketID", ticketID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to check if estimate exists:" << query.lastError().text();
+        return false;
+    }
+
+    if (query.next())
+    {
+        return query.value(0).toInt() > 0;
+    }
+
+    return false;
+}
+
 int DatabaseManager::addParts(int ticketID, const QString &description, double amount, double unitPrice)
 {
     if (!m_db.isOpen())

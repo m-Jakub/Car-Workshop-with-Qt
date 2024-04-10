@@ -154,8 +154,9 @@ void Employees::on_updateButton_clicked()
 
 void Employees::on_calendarButton_clicked()
 {
+    int selectedRow = ui->tableWidget->currentRow();
     // Instantiating the CalendarDialog
-    calendar = new Calendar(dbManager, 0, 0);
+    calendar = new Calendar(dbManager, 0, rowToIdMap.value(selectedRow));
 
     // Displaying the calendarDialog
     calendar->exec();

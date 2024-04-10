@@ -15,6 +15,7 @@ class Calendar : public QDialog
 public:
     explicit Calendar(DatabaseManager *dbManager, int ticketID, int employeeID, QWidget *parent = nullptr);
     void setupTable();
+    void populateTable();
     ~Calendar();
 
 signals:
@@ -23,8 +24,7 @@ signals:
 private slots:
     void on_buttonBox_accepted();
     void on_buttonBox_rejected();
-
-    void on_tableWidget_cellActivated(int row, int column);
+    // void on_tableWidget_cellActivated(int row, int column);
 
 private:
     Ui::Calendar *ui;

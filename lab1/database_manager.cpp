@@ -163,6 +163,32 @@ int DatabaseManager::addTicket(const QString &vehicleBrand, const QString &vehic
     return ticketID;
 }
 
+bool DatabaseManager::ticketExists(const QString &registrationID)
+{
+    if (!m_db.isOpen())
+    {
+        qDebug() << "Error: Database is not open.";
+        return false;
+    }
+
+    QSqlQuery query;
+    query.prepare("SELECT COUNT(*) FROM Tickets WHERE RegistrationID = :registrationID");
+    query.bindValue(":registrationID", registrationID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to check if ticket exists:" << query.lastError().text();
+        return false;
+    }
+
+    if (query.next())
+    {
+        return query.value(0).toInt() > 0;
+    }
+
+    return false;
+}
+
 bool DatabaseManager::removeTicket(int ticketID)
 {
     if (!m_db.isOpen())

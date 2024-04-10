@@ -20,7 +20,7 @@ public:
     ~AddTicketDialog();
 
 signals:
-    void addTicket(const QString &brand, const QString &model, const QString &serialNumber, const QString &problemDescription);
+    void addTicket(const QString &brand, const QString &model, const QString &registrationID, const QString &problemDescription, int assignedEmployeeID, const QString &startHour, const QString &endHour, const QString &day);
 
 private slots:
     void on_buttonBox_accepted();

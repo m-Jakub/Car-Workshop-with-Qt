@@ -92,11 +92,14 @@ void AddTicketDialog::on_buttonBox_accepted()
     QString registrationID = ui->registrationLineEdit->text();
     QString problemDescription = ui->problemLineEdit->text();
 
-    calendar = new Calendar(dbManager, 0, 0);
-    calendar->exec();
+    int row = ui->tableWidget->currentRow();
+    int assignedEmployeeID = rowToIdMap[row];
 
-    // connect(calendar, &Calendar::repairSchedule, this, 
-    emit addTicket(brand, model, registrationID, problemDescription);
+    calendar = new Calendar(dbManager, 0, 0);
+    connect(calendar, &Calendar::addRepairSchedule, this, [=](const QString &startHour, const QString &endHour, const QString &day)
+            { emit addTicket(brand, model, registrationID, problemDescription, assignedEmployeeID, startHour, endHour, day); });
+
+    calendar->exec();
 
     close();
 }

@@ -111,30 +111,37 @@ void Tickets::on_deleteButton_clicked()
     }
 }
 
+int Tickets::lastAddedTicketID = 0; // created for a proper work of the addTicket signal
+
 void Tickets::on_addButton_clicked()
 {
     dialogWindow = new AddTicketDialog(dbManager);
 
-    connect(dialogWindow, &AddTicketDialog::addTicket, this, [=](const QString &brand, const QString &model, const QString &registration, const QString problemDescription)
+    connect(dialogWindow, &AddTicketDialog::addTicket, this, [=](const QString &brand, const QString &model, const QString &registration, const QString problemDescription, int assignedEmployeeID, QString startHour, QString endHour, QString day)
             {
                 // Inserting the ticket into the database
-                int id = dbManager->addTicket(brand, model, registration, problemDescription, 0, 0, "created");
+                if (!dbManager->ticketExists(registration))
+                {
+                    lastAddedTicketID = dbManager->addTicket(brand, model, registration, problemDescription, assignedEmployeeID, 0, "created");
 
-                // Inserting the ticket into the tableWidget
-                int row = ui->tableWidget->rowCount();
-                ui->tableWidget->insertRow(row);
-                ui->tableWidget->setItem(row, 0, new QTableWidgetItem("created"));
-                ui->tableWidget->setItem(row, 1, new QTableWidgetItem(brand));
-                ui->tableWidget->setItem(row, 2, new QTableWidgetItem(model));
-                ui->tableWidget->setItem(row, 3, new QTableWidgetItem(registration));
-                ui->tableWidget->setItem(row, 4, new QTableWidgetItem(problemDescription));
-                ui->tableWidget->setItem(row, 5, new QTableWidgetItem(""));
-                ui->tableWidget->setItem(row, 6, new QTableWidgetItem(QString::number(0)));
+                    // Inserting the ticket into the tableWidget
+                    int row = ui->tableWidget->rowCount();
+                    ui->tableWidget->insertRow(row);
+                    ui->tableWidget->setItem(row, 0, new QTableWidgetItem("created"));
+                    ui->tableWidget->setItem(row, 1, new QTableWidgetItem(brand));
+                    ui->tableWidget->setItem(row, 2, new QTableWidgetItem(model));
+                    ui->tableWidget->setItem(row, 3, new QTableWidgetItem(registration));
+                    ui->tableWidget->setItem(row, 4, new QTableWidgetItem(problemDescription));
+                    ui->tableWidget->setItem(row, 5, new QTableWidgetItem(dbManager->getEmployeeName(assignedEmployeeID)));
+                    ui->tableWidget->setItem(row, 6, new QTableWidgetItem(QString::number(0)));
 
-                // Storing the ID in the rowToIdMap
-                rowToIdMap[row] = id;
+                    // Storing the ID in the rowToIdMap
+                    rowToIdMap[row] = lastAddedTicketID;
 
-                emit ticketsUpdated(); // Emitting the signal to update the employees table
+                    emit ticketsUpdated(); // Emitting the signal to update the employees table
+                }
+                // Inserting the repair schedule into the database
+                dbManager->addRepairSchedule(lastAddedTicketID, assignedEmployeeID, startHour, endHour, day);
             });
 
     dialogWindow->exec();

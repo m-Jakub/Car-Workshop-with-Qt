@@ -33,6 +33,7 @@ private:
     DatabaseManager *dbManager;
     QHash<int, int> rowToIdMap;
     AddTicketDialog *dialogWindow = nullptr;
+    static int lastAddedTicketID;
 };
 
 #endif // TICKETS_H

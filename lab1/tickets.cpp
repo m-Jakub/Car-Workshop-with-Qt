@@ -105,7 +105,7 @@ void Tickets::on_deleteButton_clicked()
             ui->tableWidget->removeRow(selectedRow);
             rowToIdMap.remove(selectedRow); 
             
-            emit ticketsUpdated();});
+            emit ticketsUpdated(); });
 
         confirmationDialog.exec();
     }
@@ -117,24 +117,25 @@ void Tickets::on_addButton_clicked()
 
     connect(dialogWindow, &AddTicketDialog::addTicket, this, [=](const QString &brand, const QString &model, const QString &registration, const QString problemDescription)
             {
-        // Inserting the ticket into the database
-        int id = dbManager->addTicket(brand, model, registration, problemDescription, 0,  0, "created");
+                // Inserting the ticket into the database
+                int id = dbManager->addTicket(brand, model, registration, problemDescription, 0, 0, "created");
 
-        // Inserting the ticket into the tableWidget
-        int row = ui->tableWidget->rowCount();
-        ui->tableWidget->insertRow(row);
-        ui->tableWidget->setItem(row, 0, new QTableWidgetItem("created"));
-        ui->tableWidget->setItem(row, 1, new QTableWidgetItem(brand));
-        ui->tableWidget->setItem(row, 2, new QTableWidgetItem(model));
-        ui->tableWidget->setItem(row, 3, new QTableWidgetItem(registration));
-        ui->tableWidget->setItem(row, 4, new QTableWidgetItem(problemDescription));
-        ui->tableWidget->setItem(row, 5, new QTableWidgetItem(""));
-        ui->tableWidget->setItem(row, 6, new QTableWidgetItem(QString::number(0)));
+                // Inserting the ticket into the tableWidget
+                int row = ui->tableWidget->rowCount();
+                ui->tableWidget->insertRow(row);
+                ui->tableWidget->setItem(row, 0, new QTableWidgetItem("created"));
+                ui->tableWidget->setItem(row, 1, new QTableWidgetItem(brand));
+                ui->tableWidget->setItem(row, 2, new QTableWidgetItem(model));
+                ui->tableWidget->setItem(row, 3, new QTableWidgetItem(registration));
+                ui->tableWidget->setItem(row, 4, new QTableWidgetItem(problemDescription));
+                ui->tableWidget->setItem(row, 5, new QTableWidgetItem(""));
+                ui->tableWidget->setItem(row, 6, new QTableWidgetItem(QString::number(0)));
 
-        // Storing the ID in the rowToIdMap
-        rowToIdMap[row] = id; 
+                // Storing the ID in the rowToIdMap
+                rowToIdMap[row] = id;
 
-        emit ticketsUpdated(); });
+                emit ticketsUpdated(); // Emitting the signal to update the employees table
+            });
 
     dialogWindow->exec();
 }
@@ -162,7 +163,7 @@ void Tickets::on_updateButton_clicked()
         ui->tableWidget->item(selectedRow, 3)->setText(registration);
         ui->tableWidget->item(selectedRow, 4)->setText(problemDescription); 
         
-        emit ticketsUpdated();});
+        emit ticketsUpdated(); });
 
     dialogWindow->exec();
 }

@@ -19,7 +19,7 @@ public:
     ~AddEmployeeDialog();
 
 signals:
-    void addEmployee(const QString& name, double hourlyRate);
+    void addEmployee(const QString &name, double hourlyRate);
 
 private slots:
     void on_buttonBox_accepted();

@@ -155,7 +155,7 @@ void Employees::on_updateButton_clicked()
 void Employees::on_calendarButton_clicked()
 {
     // Instantiating the CalendarDialog
-    calendar = new Calendar(dbManager);
+    calendar = new Calendar(dbManager, 0, 0);
 
     // Displaying the calendarDialog
     calendar->exec();

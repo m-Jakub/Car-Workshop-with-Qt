@@ -17,16 +17,23 @@
    <property name="geometry">
     <rect>
      <x>779</x>
-     <y>100</y>
+     <y>60</y>
      <width>131</width>
-     <height>191</height>
+     <height>291</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
+     <widget class="QPushButton" name="calendarButton">
+      <property name="text">
+       <string>Show Calendar</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QPushButton" name="assignEmployeeButton">
       <property name="text">
-       <string>Assign Employee</string>
+       <string>Assign New Employee</string>
       </property>
      </widget>
     </item>
@@ -65,6 +72,29 @@
       </property>
      </widget>
     </item>
+    <item>
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Change state:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="stateComboBox"/>
+    </item>
    </layout>
   </widget>
   <widget class="QPushButton" name="addButton">
@@ -84,7 +114,7 @@
    <property name="geometry">
     <rect>
      <x>780</x>
-     <y>80</y>
+     <y>40</y>
      <width>81</width>
      <height>16</height>
     </rect>

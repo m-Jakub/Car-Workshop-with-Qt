@@ -30,20 +30,13 @@ void MainWindow::closeEvent(QCloseEvent *event)
     QMainWindow::closeEvent(event);
 }
 
-void MainWindow::updateEmployeesTable()
+void MainWindow::updateTables()
 {
     if (employeesWindow)
-    {
         employeesWindow->populateTable();
-    }
-}
 
-void MainWindow::updateTicketsTable()
-{
     if (ticketsWindow)
-    {
         ticketsWindow->populateTable();
-    }
 }
 
 void MainWindow::on_Exit_clicked()
@@ -62,7 +55,7 @@ void MainWindow::on_Employees_clicked()
     if (!employeesWindow)
     {
         employeesWindow = new Employees(dbManager);
-        connect(employeesWindow, &Employees::employeesUpdated, this, &MainWindow::updateTicketsTable);
+        connect(employeesWindow, &Employees::employeesUpdated, this, &MainWindow::updateTables); // Connected to update the table widgets when the employees are updated
     }
 
     if (employeesWindow && employeesWindow->isMinimized())
@@ -78,7 +71,7 @@ void MainWindow::on_Tickets_clicked()
     if (!ticketsWindow)
     {
         ticketsWindow = new Tickets(dbManager);
-        connect(ticketsWindow, &Tickets::ticketsUpdated, this, &MainWindow::updateEmployeesTable);
+        connect(ticketsWindow, &Tickets::ticketsUpdated, this, &MainWindow::updateTables);
     }
 
     if (ticketsWindow && ticketsWindow->isMinimized())

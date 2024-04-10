@@ -21,8 +21,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(DatabaseManager *dbmanager, QWidget *parent = nullptr);
     ~MainWindow();
-    void updateEmployeesTable();
-    void updateTicketsTable();
+    void updateTables();
 
 protected:
     void closeEvent(QCloseEvent *event) override;

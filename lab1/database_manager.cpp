@@ -240,6 +240,29 @@ bool DatabaseManager::updateTicket(int ticketID, const QString &vehicleBrand, co
     return true;
 }
 
+bool DatabaseManager::updateTicketState(int ticketID, const QString &state)
+{
+    if (!m_db.isOpen())
+    {
+        qDebug() << "Error: Database is not open.";
+        return false;
+    }
+
+    QSqlQuery query;
+    query.prepare("UPDATE Tickets SET State = :state WHERE TicketID = :ticketID");
+    query.bindValue(":state", state);
+    query.bindValue(":ticketID", ticketID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to update ticket state:" << query.lastError().text();
+        return false;
+    }
+
+    qDebug() << "Ticket state updated successfully.";
+    return true;
+}
+
 int DatabaseManager::addRepairSchedule(int ticketID, int employeeID, const QString &startHour, const QString &endHour, const QString &dayOfWeek)
 {
     if (!m_db.isOpen())

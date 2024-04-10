@@ -3,7 +3,9 @@
 
 #include "database_manager.h"
 #include "add_ticket_dialog.h"
+#include "calendar.h"
 #include <QWidget>
+#include <QTableWidgetItem>
 
 namespace Ui
 {
@@ -17,6 +19,7 @@ class Tickets : public QWidget
 public:
     explicit Tickets(DatabaseManager *dbManager, QWidget *parent = nullptr);
     ~Tickets();
+    void changeButtonsState(bool state);
     void setupTable();
     void populateTable();
 
@@ -27,12 +30,18 @@ private slots:
     void on_deleteButton_clicked();
     void on_addButton_clicked();
     void on_updateButton_clicked();
+    void on_calendarButton_clicked();
+    void onTableRowClicked(QTableWidgetItem *item);
+    void on_stateComboBox_currentIndexChanged(int index);
+
+    void on_stateComboBox_activated(int index);
 
 private:
     Ui::Tickets *ui;
     DatabaseManager *dbManager;
     QHash<int, int> rowToIdMap;
     AddTicketDialog *dialogWindow = nullptr;
+    Calendar *calendar = nullptr;
     static int lastAddedTicketID;
 };
 

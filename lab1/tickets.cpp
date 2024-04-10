@@ -18,10 +18,15 @@ Tickets::~Tickets()
     delete ui;
 }
 
+void Tickets::changeButtonsState(bool state)
+{
+    ui->updateButton->setEnabled(state);
+    ui->deleteButton->setEnabled(state);
+    ui->calendarButton->setEnabled(state);
+}
+
 void Tickets::setupTable()
 {
-    //     int addTicket(const QString& vehicleBrand, const QString& vehicleModel, const QString& registrationID, const QString& problemDescription, int assignedEmployeeID, double pricePaidByClient, const QString& state);
-
     // Setting column names
     QStringList headerLabels;
     headerLabels << "State"
@@ -44,12 +49,27 @@ void Tickets::setupTable()
 
     // Making the table read-only
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    // Connecting itemClicked signal of the tableWidget
+    connect(ui->tableWidget, &QTableWidget::itemClicked, this, &Tickets::onTableRowClicked);
+
+    // Disabling the buttons initially
+    changeButtonsState(false);
+
+    // Adding entries to the combo box
+    ui->stateComboBox->addItem("created");
+    ui->stateComboBox->addItem("in progress");
+    ui->stateComboBox->addItem("done");
+    ui->stateComboBox->addItem("closed");
 }
 
 void Tickets::populateTable()
 {
     ui->tableWidget->clearContents();
     ui->tableWidget->setRowCount(0);
+
+    // Disabling the buttons after updating the table
+    changeButtonsState(false);
 
     QSqlQuery query("SELECT TicketId, VehicleBrand, VehicleModel, RegistrationID, ProblemDescription, AssignedEmployeeID, PricePaidByClient, State FROM Tickets");
     while (query.next())
@@ -141,36 +161,57 @@ void Tickets::on_addButton_clicked()
                     emit ticketsUpdated(); // Emitting the signal to update the employees table
                 }
                 // Inserting the repair schedule into the database
-                dbManager->addRepairSchedule(lastAddedTicketID, assignedEmployeeID, startHour, endHour, day);
-            });
+                dbManager->addRepairSchedule(lastAddedTicketID, assignedEmployeeID, startHour, endHour, day); });
 
     dialogWindow->exec();
 }
 
 void Tickets::on_updateButton_clicked()
 {
-    int selectedRow = ui->tableWidget->currentRow();
-
-    dialogWindow = new AddTicketDialog(dbManager, ui->tableWidget->item(selectedRow, 1)->text(), ui->tableWidget->item(selectedRow, 2)->text(), ui->tableWidget->item(selectedRow, 3)->text(), ui->tableWidget->item(selectedRow, 4)->text());
-
-    connect(dialogWindow, &AddTicketDialog::addTicket, this, [=](const QString &brand, const QString &model, const QString &registration, const QString problemDescription)
-            {
-        int ticketId = rowToIdMap.value(selectedRow);
-
-        // Retreiving assigned employee id, price paid by client and state
-        QSqlQuery query("SELECT AssignedEmployeeID, PricePaidByClient, State FROM Tickets WHERE TicketId = " + QString::number(ticketId));
-        QString assignedEmployeeID = query.value(0).toString();
-        QString pricePaidByClient = query.value(1).toString();
-        QString state = query.value(2).toString();
-
-        dbManager->updateTicket(ticketId, brand, model, registration, problemDescription, assignedEmployeeID.toInt(), pricePaidByClient.toDouble(), state);
-
-        ui->tableWidget->item(selectedRow, 1)->setText(brand);
-        ui->tableWidget->item(selectedRow, 2)->setText(model);
-        ui->tableWidget->item(selectedRow, 3)->setText(registration);
-        ui->tableWidget->item(selectedRow, 4)->setText(problemDescription); 
-        
-        emit ticketsUpdated(); });
-
-    dialogWindow->exec();
 }
+
+void Tickets::on_calendarButton_clicked()
+{
+    int selectedRow = ui->tableWidget->currentRow();
+    int ticketID = rowToIdMap.value(selectedRow);
+
+    if (ticketID != 0)
+    {
+        calendar = new Calendar(dbManager, ticketID, 0);
+        calendar->exec();
+    }
+}
+
+void Tickets::onTableRowClicked(QTableWidgetItem *item)
+{
+    ui->updateButton->setEnabled(true);
+    ui->deleteButton->setEnabled(true);
+    ui->calendarButton->setEnabled(true);
+
+    if (item)
+    {
+        int selectedRow = item->row();
+        QString state = ui->tableWidget->item(selectedRow, 0)->text();
+
+        // Setting the default selection of the combo box to the retrieved state value
+        ui->stateComboBox->setCurrentText(state);
+    }
+}
+
+void Tickets::on_stateComboBox_currentIndexChanged(int index)
+{
+}
+
+void Tickets::on_stateComboBox_activated(int index)
+{
+    QString text = ui->stateComboBox->itemText(index); // Get the text of the selected item
+    int selectedRow = ui->tableWidget->currentRow();
+    int ticketID = rowToIdMap.value(selectedRow);
+
+    if (ticketID != 0)
+    {
+        dbManager->updateTicketState(ticketID, text);
+        ui->tableWidget->item(selectedRow, 0)->setText(text);
+    }
+}
+

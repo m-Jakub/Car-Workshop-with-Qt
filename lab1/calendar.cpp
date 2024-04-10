@@ -57,6 +57,37 @@ void Calendar::populateTable()
             }
         }
     }
+    if (ticketID != 0)
+    {
+        // Getting the ticket's schedule
+        QSqlQuery query;
+        query.prepare("SELECT DayOfWeek, StartHour, EndHour FROM ScheduledRepairTimeSlots WHERE TicketId = :ticketId");
+        query.bindValue(":ticketId", ticketID);
+        if (!query.exec())
+        {
+            qDebug() << "Error executing query:" << query.lastError().text();
+            return;
+        }
+
+        while (query.next())
+        {
+            int day = query.value(0).toInt();
+            int startHour = query.value(1).toInt();
+            int endHour = query.value(2).toInt();
+
+            for (int row = startHour - 8; row < endHour - 8; ++row)
+            {
+                // Setting background color for the cell
+                QTableWidgetItem *item = ui->tableWidget->item(row, day - 1);
+                if (!item)
+                {
+                    item = new QTableWidgetItem(); // Create new QTableWidgetItem if it doesn't exist
+                    ui->tableWidget->setItem(row, day - 1, item);
+                }
+                item->setBackground(QColor(Qt::green));
+            }
+        }
+    }
 }
 
 void Calendar::on_buttonBox_accepted()

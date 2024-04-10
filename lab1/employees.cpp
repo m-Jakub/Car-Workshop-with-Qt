@@ -94,7 +94,7 @@ void Employees::on_deleteButton_clicked()
             // Removing the ID from the rowToIdMap
             rowToIdMap.remove(selectedRow); 
             
-            emit employeesUpdated();});
+            emit employeesUpdated(); });
 
         // Displaying the confirmation dialog
         confirmationDialog.exec();
@@ -121,7 +121,7 @@ void Employees::on_addButton_clicked()
         // Storing the ID in the rowToIdMap
         rowToIdMap[row] = id; 
         
-        emit employeesUpdated();});
+        emit employeesUpdated(); });
 
     // Displaying the addEmployeeWindow
     dialogWindow->exec();
@@ -146,7 +146,7 @@ void Employees::on_updateButton_clicked()
         ui->tableWidget->setItem(selectedRow, 0, new QTableWidgetItem(name));
         ui->tableWidget->setItem(selectedRow, 1, new QTableWidgetItem(QString::number(hourlyRate))); 
         
-        emit employeesUpdated();});
+        emit employeesUpdated(); });
 
     // Displaying the addEmployeeWindow
     dialogWindow->exec();
@@ -155,9 +155,14 @@ void Employees::on_updateButton_clicked()
 void Employees::on_calendarButton_clicked()
 {
     int selectedRow = ui->tableWidget->currentRow();
-    // Instantiating the CalendarDialog
-    calendar = new Calendar(dbManager, 0, rowToIdMap.value(selectedRow));
+    int employeeId = rowToIdMap.value(selectedRow);
 
-    // Displaying the calendarDialog
-    calendar->exec();
+    if (employeeId != 0)
+    {
+        // Instantiating the CalendarDialog
+        calendar = new Calendar(dbManager, 0, employeeId);
+
+        // Displaying the calendarDialog
+        calendar->exec();
+    }
 }

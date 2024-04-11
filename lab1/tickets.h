@@ -38,6 +38,8 @@ private slots:
 
     void on_estimateButton_clicked();
 
+    void on_partsButton_clicked();
+
 private:
     Ui::Tickets *ui;
     DatabaseManager *dbManager;

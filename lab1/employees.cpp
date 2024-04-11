@@ -3,6 +3,7 @@
 #include "database_manager.h"
 #include "delete_confirmation_dialog.h"
 #include <QSqlQuery>
+#include <QSqlError>
 
 Employees::Employees(DatabaseManager *dbManager, QWidget *parent)
     : QWidget(parent), ui(new Ui::Employees), dbManager(dbManager)
@@ -10,7 +11,6 @@ Employees::Employees(DatabaseManager *dbManager, QWidget *parent)
     ui->setupUi(this);
 
     setupTable();
-    populateTable();
     populateTable();
 }
 
@@ -47,6 +47,11 @@ void Employees::populateTable()
     ui->tableWidget->setRowCount(0);
 
     QSqlQuery query("SELECT EmployeeId, Name, HourlyRate FROM Employees");
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to fetch parts:" << query.lastError().text();
+        return;
+    }
     while (query.next())
     {
         int id = query.value(0).toInt();

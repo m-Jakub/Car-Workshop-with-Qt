@@ -13,6 +13,7 @@ CONFIG += debug
 
 SOURCES += \
     add_employee_dialog.cpp \
+    add_parts_dialog.cpp \
     add_ticket_dialog.cpp \
     calendar.cpp \
     database_manager.cpp \
@@ -21,10 +22,12 @@ SOURCES += \
     estimate.cpp \
     main.cpp \
     mainwindow.cpp \
+    parts.cpp \
     tickets.cpp
 
 HEADERS += \
     add_employee_dialog.h \
+    add_parts_dialog.h \
     add_ticket_dialog.h \
     calendar.h \
     database_manager.h \
@@ -32,16 +35,19 @@ HEADERS += \
     employees.h \
     estimate.h \
     mainwindow.h \
+    parts.h \
     tickets.h
 
 FORMS += \
     add_employee_dialog.ui \
+    add_parts_dialog.ui \
     add_ticket_dialog.ui \
     calendar.ui \
     delete_confirmation_dialog.ui \
     employees.ui \
     estimate.ui \
     mainwindow.ui \
+    parts.ui \
     tickets.ui
 
 # Default rules for deployment.

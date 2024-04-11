@@ -399,6 +399,53 @@ int DatabaseManager::addParts(int ticketID, const QString &description, double a
     return partID;
 }
 
+bool DatabaseManager::removeParts(int partID)
+{
+    if (!m_db.isOpen())
+    {
+        qDebug() << "Error: Database is not open.";
+        return false;
+    }
+
+    QSqlQuery query;
+    query.prepare("DELETE FROM Parts WHERE PartID = :partID");
+    query.bindValue(":partID", partID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to remove parts:" << query.lastError().text();
+        return false;
+    }
+
+    qDebug() << "Parts removed successfully.";
+    return true;
+}
+
+bool DatabaseManager::updateParts(int partID, const QString &description, double amount, double unitPrice)
+{
+    if (!m_db.isOpen())
+    {
+        qDebug() << "Error: Database is not open.";
+        return false;
+    }
+
+    QSqlQuery query;
+    query.prepare("UPDATE Parts SET Description = :description, Amount = :amount, UnitPrice = :unitPrice WHERE PartID = :partID");
+    query.bindValue(":description", description);
+    query.bindValue(":amount", amount);
+    query.bindValue(":unitPrice", unitPrice);
+    query.bindValue(":partID", partID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to update parts:" << query.lastError().text();
+        return false;
+    }
+
+    qDebug() << "Parts updated successfully.";
+    return true;
+}
+
 int DatabaseManager::addWorkLogEntry(int ticketID, int employeeID, const QString &startHour, const QString &endHour)
 {
     if (!m_db.isOpen())

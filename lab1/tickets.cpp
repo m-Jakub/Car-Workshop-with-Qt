@@ -1,8 +1,10 @@
 #include "tickets.h"
 #include "ui_tickets.h"
 #include "database_manager.h"
+#include "add_ticket_dialog.h"
 #include "delete_confirmation_dialog.h"
 #include "estimate.h"
+#include "parts.h"
 #include <QSqlQuery>
 
 Tickets::Tickets(DatabaseManager *dbManager, QWidget *parent)
@@ -24,6 +26,9 @@ void Tickets::changeButtonsState(bool state)
     ui->updateButton->setEnabled(state);
     ui->deleteButton->setEnabled(state);
     ui->calendarButton->setEnabled(state);
+    ui->estimateButton->setEnabled(state);
+    ui->stateComboBox->setEnabled(state);
+    ui->partsButton->setEnabled(state);
 }
 
 void Tickets::setupTable()
@@ -185,9 +190,7 @@ void Tickets::on_calendarButton_clicked()
 
 void Tickets::onTableRowClicked(QTableWidgetItem *item)
 {
-    ui->updateButton->setEnabled(true);
-    ui->deleteButton->setEnabled(true);
-    ui->calendarButton->setEnabled(true);
+    changeButtonsState(true);
 
     if (item)
     {
@@ -226,6 +229,19 @@ void Tickets::on_estimateButton_clicked()
     {
         Estimate estimateDialog(dbManager, ticketID);
         estimateDialog.exec();
+    }
+}
+
+
+void Tickets::on_partsButton_clicked()
+{
+    int selectedRow = ui->tableWidget->currentRow();
+    int ticketID = rowToIdMap.value(selectedRow);
+
+    if (ticketID != 0)
+    {
+        Parts parts(dbManager, ticketID);
+        parts.exec();
     }
 }
 

@@ -2,8 +2,8 @@
 #ifndef ADD_EMPLOYEE_DIALOG_H
 #define ADD_EMPLOYEE_DIALOG_H
 
-#include <QDialog>
 #include "database_manager.h"
+#include <QDialog>
 
 namespace Ui
 {
@@ -17,6 +17,7 @@ class AddEmployeeDialog : public QDialog
 public:
     explicit AddEmployeeDialog(DatabaseManager *dbManager, const QString &name = "", double hourlyRate = 0.0, QWidget *parent = nullptr);
     ~AddEmployeeDialog();
+    void fillFields(const QString &name, double hourlyRate);
 
 signals:
     void addEmployee(const QString &name, double hourlyRate);

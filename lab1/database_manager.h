@@ -28,6 +28,8 @@ public:
     bool updateEstimate(int ticketID, const QString& description, double expectedCost, bool acceptedByClient);
     bool estimateExists(int ticketID);
     int addParts(int ticketID, const QString& description, double amount, double unitPrice);
+    bool removeParts(int partID);
+    bool updateParts(int partID, const QString& description, double amount, double unitPrice);
     int addWorkLogEntry(int ticketID, int employeeID, const QString& startHour, const QString& endHour);
 
 private:

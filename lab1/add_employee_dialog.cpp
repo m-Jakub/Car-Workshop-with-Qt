@@ -8,21 +8,18 @@ AddEmployeeDialog::AddEmployeeDialog(DatabaseManager *dbManager, const QString &
 {
     ui->setupUi(this);
     setWindowTitle("Car Workshop Management System");
-
-    // Setting initial values to line edits if provided
-    if (!name.isEmpty())
-    {
-        ui->nameLineEdit->setText(name);
-    }
-    if (hourlyRate != 0.0)
-    {
-        ui->hourlyRateDoubleSpinBox->setValue(hourlyRate);
-    }
+    fillFields(name, hourlyRate);
 }
 
 AddEmployeeDialog::~AddEmployeeDialog()
 {
     delete ui;
+}
+
+void AddEmployeeDialog::fillFields(const QString &name, double hourlyRate)
+{
+    ui->nameLineEdit->setText(name);
+    ui->hourlyRateDoubleSpinBox->setValue(hourlyRate);
 }
 
 void AddEmployeeDialog::on_buttonBox_accepted()

@@ -18,7 +18,7 @@
     <rect>
      <x>779</x>
      <y>60</y>
-     <width>131</width>
+     <width>146</width>
      <height>291</height>
     </rect>
    </property>
@@ -33,7 +33,7 @@
     <item>
      <widget class="QPushButton" name="assignEmployeeButton">
       <property name="text">
-       <string>Assign New Employee</string>
+       <string>Assign Another Employee</string>
       </property>
      </widget>
     </item>

@@ -4,17 +4,37 @@
 #include "calendar.h"
 #include <QSqlQuery>
 
-AddTicketDialog::AddTicketDialog(DatabaseManager *dbManager, const QString &brand, const QString &model, const QString &registrationID, const QString &assignedEmployee, QWidget *parent)
-    : QDialog(parent), ui(new Ui::AddTicketDialog), dbManager(dbManager)
+AddTicketDialog::AddTicketDialog(DatabaseManager *dbManager, const QString &brand, const QString &model, const QString &registrationID, const QString &problemDescription, int assignedEmployeeID, bool choose_employee_only, int ticketID, QWidget *parent)
+    : QDialog(parent), ui(new Ui::AddTicketDialog), dbManager(dbManager), choose_employee_only(choose_employee_only), ticketID(ticketID)
 {
     ui->setupUi(this);
 
     setupTable();
     populateTable();
-
     setWindowTitle("Car Workshop Management System");
 
+    disableFields(choose_employee_only); // Disabling fields if choose_employee_only is true
+
     // Setting initial values to line edits if provided
+    if (initialized = assignedEmployeeID != 0)
+        fillFields(brand, model, registrationID, problemDescription, assignedEmployeeID);
+}
+
+AddTicketDialog::~AddTicketDialog()
+{
+    delete ui;
+}
+
+void AddTicketDialog::disableFields(bool disable)
+{
+    ui->brandLineEdit->setDisabled(disable);
+    ui->modelLineEdit->setDisabled(disable);
+    ui->registrationLineEdit->setDisabled(disable);
+    ui->problemLineEdit->setDisabled(disable);
+}
+
+void AddTicketDialog::fillFields(const QString &brand, const QString &model, const QString &registrationID, const QString &problemDescription, int assignedEmployeeID)
+{
     if (!brand.isEmpty())
     {
         ui->brandLineEdit->setText(brand);
@@ -27,15 +47,28 @@ AddTicketDialog::AddTicketDialog(DatabaseManager *dbManager, const QString &bran
     {
         ui->registrationLineEdit->setText(registrationID);
     }
-    if (!assignedEmployee.isEmpty())
+    if (!problemDescription.isEmpty())
     {
-        ui->problemLineEdit->setText(assignedEmployee);
+        ui->problemLineEdit->setText(problemDescription);
     }
-}
+    if (assignedEmployeeID != 0)
+    {
+        QSqlQuery query;
+        query.prepare("SELECT Name FROM Employees WHERE EmployeeId = :id");
+        query.bindValue(":id", assignedEmployeeID);
+        query.exec();
+        query.next();
+        QString employeeName = query.value(0).toString();
 
-AddTicketDialog::~AddTicketDialog()
-{
-    delete ui;
+        for (int i = 0; i < ui->tableWidget->rowCount(); i++)
+        {
+            if (ui->tableWidget->item(i, 0)->text() == employeeName)
+            {
+                ui->tableWidget->selectRow(i);
+                break;
+            }
+        }
+    }
 }
 
 void AddTicketDialog::setupTable()
@@ -95,11 +128,23 @@ void AddTicketDialog::on_buttonBox_accepted()
     int row = ui->tableWidget->currentRow();
     int assignedEmployeeID = rowToIdMap[row];
 
-    calendar = new Calendar(dbManager, 0, 0);
-    connect(calendar, &Calendar::addRepairSchedule, this, [=](const QString &startHour, const QString &endHour, const QString &day)
-            { emit addTicket(brand, model, registrationID, problemDescription, assignedEmployeeID, startHour, endHour, day); });
+    if (!initialized)
+    {
 
-    calendar->exec();
+        calendar = new Calendar(dbManager, 0, 0);
+        connect(calendar, &Calendar::addRepairSchedule, this, [=](const QString &startHour, const QString &endHour, const QString &day)
+                { emit addTicket(brand, model, registrationID, problemDescription, assignedEmployeeID, startHour, endHour, day); });
+        calendar->exec();
+    }
+    if (choose_employee_only)
+    {
+        calendar = new Calendar(dbManager, ticketID, 0); //////////////////////////// TO DO
+        connect(calendar, &Calendar::addRepairSchedule, this, [=](const QString &startHour, const QString &endHour, const QString &day)
+                { emit addTicket(brand, model, registrationID, problemDescription, assignedEmployeeID, startHour, endHour, day); });
+        calendar->exec();
+    }
+    else
+        emit addTicket(brand, model, registrationID, problemDescription, assignedEmployeeID, "", "", "");
 
     close();
 }

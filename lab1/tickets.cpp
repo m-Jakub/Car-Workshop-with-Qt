@@ -29,6 +29,7 @@ void Tickets::changeButtonsState(bool state)
     ui->estimateButton->setEnabled(state);
     ui->stateComboBox->setEnabled(state);
     ui->partsButton->setEnabled(state);
+    ui->assignEmployeeButton->setEnabled(state);
 }
 
 void Tickets::setupTable()
@@ -109,6 +110,7 @@ void Tickets::populateTable()
 
         // Storing the ID in the rowToIdMap
         rowToIdMap[row] = id;
+        rowToEmployeeIDMap[row] = assignedEmployeeID;
     }
 }
 
@@ -174,6 +176,30 @@ void Tickets::on_addButton_clicked()
 
 void Tickets::on_updateButton_clicked()
 {
+    int selectedRow = ui->tableWidget->currentRow();
+    int ticketID = rowToIdMap.value(selectedRow);
+
+    // retreiving employee id
+
+    if (ticketID != 0)
+    {
+        dialogWindow = new AddTicketDialog(dbManager, ui->tableWidget->item(selectedRow, 1)->text(), ui->tableWidget->item(selectedRow, 2)->text(), ui->tableWidget->item(selectedRow, 3)->text(), ui->tableWidget->item(selectedRow, 4)->text(), rowToEmployeeIDMap.value(selectedRow));
+
+        connect(dialogWindow, &AddTicketDialog::addTicket, this, [=](const QString &brand, const QString &model, const QString &registration, const QString problemDescription, int assignedEmployeeID, QString startHour, QString endHour, QString day)
+                {
+                    dbManager->updateTicket(ticketID, brand, model, registration, problemDescription, assignedEmployeeID);
+
+                    ui->tableWidget->setItem(selectedRow, 1, new QTableWidgetItem(brand));
+                    ui->tableWidget->setItem(selectedRow, 2, new QTableWidgetItem(model));
+                    ui->tableWidget->setItem(selectedRow, 3, new QTableWidgetItem(registration));
+                    ui->tableWidget->setItem(selectedRow, 4, new QTableWidgetItem(problemDescription));
+                    ui->tableWidget->setItem(selectedRow, 5, new QTableWidgetItem(dbManager->getEmployeeName(assignedEmployeeID)));
+
+                    emit ticketsUpdated(); // Emitting the signal to update the employees table
+                });
+
+        dialogWindow->exec();
+    }
 }
 
 void Tickets::on_calendarButton_clicked()
@@ -202,10 +228,6 @@ void Tickets::onTableRowClicked(QTableWidgetItem *item)
     }
 }
 
-void Tickets::on_stateComboBox_currentIndexChanged(int index)
-{
-}
-
 void Tickets::on_stateComboBox_activated(int index)
 {
     QString text = ui->stateComboBox->itemText(index); // Get the text of the selected item
@@ -219,7 +241,6 @@ void Tickets::on_stateComboBox_activated(int index)
     }
 }
 
-
 void Tickets::on_estimateButton_clicked()
 {
     int selectedRow = ui->tableWidget->currentRow();
@@ -231,7 +252,6 @@ void Tickets::on_estimateButton_clicked()
         estimateDialog.exec();
     }
 }
-
 
 void Tickets::on_partsButton_clicked()
 {
@@ -245,3 +265,20 @@ void Tickets::on_partsButton_clicked()
     }
 }
 
+void Tickets::on_assignEmployeeButton_clicked()
+{
+    int selectedRow = ui->tableWidget->currentRow();
+    int ticketID = rowToIdMap.value(selectedRow);
+
+    if (ticketID != 0)
+    {
+        dialogWindow = new AddTicketDialog(dbManager, ui->tableWidget->item(selectedRow, 1)->text(), ui->tableWidget->item(selectedRow, 2)->text(), ui->tableWidget->item(selectedRow, 3)->text(), ui->tableWidget->item(selectedRow, 4)->text(), rowToEmployeeIDMap.value(selectedRow), true, ticketID);
+
+        connect(dialogWindow, &AddTicketDialog::addTicket, this, [=](const QString &brand, const QString &model, const QString &registration, const QString problemDescription, int assignedEmployeeID, QString startHour, QString endHour, QString day)
+                {
+                    dbManager->addRepairSchedule(ticketID, assignedEmployeeID, startHour, endHour, day);
+                    emit ticketsUpdated();
+                });
+    }
+    dialogWindow->exec();
+}

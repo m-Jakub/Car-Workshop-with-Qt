@@ -21,7 +21,7 @@ public:
     int addTicket(const QString& vehicleBrand, const QString& vehicleModel, const QString& registrationID, const QString& problemDescription, int assignedEmployeeID, double pricePaidByClient, const QString& state);
     bool ticketExists(const QString& registrationID);
     bool removeTicket(int ticketID);
-    bool updateTicket(int ticketID, const QString& vehicleBrand, const QString& vehicleModel, const QString& registrationID, const QString& problemDescription, int assignedEmployeeID, double pricePaidByClient, const QString& state);
+    bool updateTicket(int ticketID, const QString& vehicleBrand, const QString& vehicleModel, const QString& registrationID, const QString& problemDescription, int assignedEmployeeID);
     bool updateTicketState(int ticketID, const QString& state);
     int addRepairSchedule(int ticketID, int employeeID, const QString& startHour, const QString& endHour, const QString& dayOfWeek);
     int addEstimate(int ticketID, const QString& description, double expectedCost, bool acceptedByClient);

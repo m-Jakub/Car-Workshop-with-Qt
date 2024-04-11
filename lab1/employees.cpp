@@ -115,7 +115,7 @@ void Employees::on_addButton_clicked()
     connect(dialogWindow, &AddEmployeeDialog::addEmployee, this, [=](const QString &name, double hourlyRate)
             {
         // Inserting the employee into the database
-        int id = dbManager->addEmployee(name, hourlyRate);
+        int employeeId = dbManager->addEmployee(name, hourlyRate);
 
         // Inserting the employee into the tableWidget
         int row = ui->tableWidget->rowCount();
@@ -124,7 +124,7 @@ void Employees::on_addButton_clicked()
         ui->tableWidget->setItem(row, 1, new QTableWidgetItem(QString::number(hourlyRate)));
 
         // Storing the ID in the rowToIdMap
-        rowToIdMap[row] = id; 
+        rowToIdMap[row] = employeeId; 
         
         emit employeesUpdated(); });
 
@@ -146,6 +146,7 @@ void Employees::on_updateButton_clicked()
 
         // Inserting the employee into the database
         dbManager->updateEmployee(employeeId, name, hourlyRate);
+        
         // Inserting the employee into the tableWidget
         int row = ui->tableWidget->rowCount();
         ui->tableWidget->setItem(selectedRow, 0, new QTableWidgetItem(name));

@@ -211,7 +211,7 @@ bool DatabaseManager::removeTicket(int ticketID)
     return true;
 }
 
-bool DatabaseManager::updateTicket(int ticketID, const QString &vehicleBrand, const QString &vehicleModel, const QString &registrationID, const QString &problemDescription, int assignedEmployeeID, double pricePaidByClient, const QString &state)
+bool DatabaseManager::updateTicket(int ticketID, const QString &vehicleBrand, const QString &vehicleModel, const QString &registrationID, const QString &problemDescription, int assignedEmployeeID)
 {
     if (!m_db.isOpen())
     {
@@ -220,14 +220,12 @@ bool DatabaseManager::updateTicket(int ticketID, const QString &vehicleBrand, co
     }
 
     QSqlQuery query;
-    query.prepare("UPDATE Tickets SET VehicleBrand = :vehicleBrand, VehicleModel = :vehicleModel, RegistrationID = :registrationID, ProblemDescription = :problemDescription, AssignedEmployeeID = :assignedEmployeeID, State = :state, PricePaidByClient = :pricePaidByClient WHERE TicketID = :ticketID");
+    query.prepare("UPDATE Tickets SET VehicleBrand = :vehicleBrand, VehicleModel = :vehicleModel, RegistrationID = :registrationID, ProblemDescription = :problemDescription, AssignedEmployeeID = :assignedEmployeeID WHERE TicketID = :ticketID");
     query.bindValue(":vehicleBrand", vehicleBrand);
     query.bindValue(":vehicleModel", vehicleModel);
     query.bindValue(":registrationID", registrationID);
     query.bindValue(":problemDescription", problemDescription);
     query.bindValue(":assignedEmployeeID", assignedEmployeeID);
-    query.bindValue(":state", state);
-    query.bindValue(":pricePaidByClient", pricePaidByClient);
     query.bindValue(":ticketID", ticketID);
 
     if (!query.exec())

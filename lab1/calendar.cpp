@@ -10,6 +10,7 @@ Calendar::Calendar(DatabaseManager *dbManager, int ticketID, int employeeID, QWi
     ui->setupUi(this);
     setupTable();
     populateTable();
+    disableSelectionOfOccupiedSlots();
 }
 
 Calendar::~Calendar()
@@ -22,6 +23,8 @@ void Calendar::setupTable()
     // Setting the selection mode and behavior for the table widget
     ui->tableWidget->setSelectionMode(QAbstractItemView::MultiSelection);
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectItems);
+    setWindowTitle("Calendar - Car Workshop Management System");
+    ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 void Calendar::populateTable()
@@ -53,7 +56,7 @@ void Calendar::populateTable()
                     item = new QTableWidgetItem(); // Create new QTableWidgetItem if it doesn't exist
                     ui->tableWidget->setItem(row, day - 1, item);
                 }
-                item->setBackground(QColor(Qt::green));
+                item->setBackground(QColor(Qt::gray));
             }
         }
     }
@@ -84,13 +87,13 @@ void Calendar::populateTable()
                     item = new QTableWidgetItem(); // Create new QTableWidgetItem if it doesn't exist
                     ui->tableWidget->setItem(row, day - 1, item);
                 }
-                item->setBackground(QColor(Qt::green));
+                item->setBackground(QColor(Qt::gray));
             }
         }
     }
 }
 
-void Calendar::on_buttonBox_accepted()
+void Calendar::addSelectedSlotsToRepairSchedule()
 {
     QModelIndexList selectedIndexes = ui->tableWidget->selectionModel()->selectedIndexes();
 
@@ -109,7 +112,9 @@ void Calendar::on_buttonBox_accepted()
             if (selectedIndexes.contains(index))
             {
                 if (startHour == 0)
+                {
                     startHour = row + 8;
+                }
             }
             else
             {
@@ -121,16 +126,30 @@ void Calendar::on_buttonBox_accepted()
                 }
             }
         }
-        close();
+        if (startHour != 0)
+        {
+            endHour = ui->tableWidget->rowCount() + 8; // Last hour of the day
+            emit addRepairSchedule(QString::number(startHour), QString::number(endHour), QString::number(day));
+        }
     }
 }
 
-void Calendar::on_buttonBox_rejected()
+void Calendar::disableSelectionOfOccupiedSlots()
 {
-    close();
+    for (int column = 0; column < ui->tableWidget->columnCount(); ++column)
+    {
+        for (int row = 0; row < ui->tableWidget->rowCount(); ++row)
+        {
+            QTableWidgetItem *item = ui->tableWidget->item(row, column);
+            if (item && item->background().color() != Qt::white)
+            {
+                ui->tableWidget->item(row, column)->setFlags(ui->tableWidget->item(row, column)->flags() & ~Qt::ItemIsSelectable);
+            }
+        }
+    }
 }
 
-// void Calendar::on_tableWidget_cellActivated(int row, int column)
-// {
-//     qDebug() << "Cell activated";
-// }
+void Calendar::on_buttonBox_accepted()
+{
+    addSelectedSlotsToRepairSchedule();
+}

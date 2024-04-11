@@ -49,6 +49,24 @@ bool DatabaseManager::removeEmployee(int employeeID)
     }
 
     QSqlQuery query;
+    query.prepare("UPDATE Tickets SET AssignedEmployeeID = NULL WHERE AssignedEmployeeID = :employeeID");
+    query.bindValue(":employeeID", employeeID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to remove employee from tickets:" << query.lastError().text();
+        return false;
+    }
+
+    query.prepare("DELETE FROM ScheduledRepairTimeSlots WHERE EmployeeID = :employeeID");
+    query.bindValue(":employeeID", employeeID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to remove employee schedules:" << query.lastError().text();
+        return false;
+    }
+
     query.prepare("DELETE FROM Employees WHERE EmployeeID = :employeeID");
     query.bindValue(":employeeID", employeeID);
 
@@ -198,6 +216,42 @@ bool DatabaseManager::removeTicket(int ticketID)
     }
 
     QSqlQuery query;
+    query.prepare("DELETE FROM ScheduledRepairTimeSlots WHERE TicketID = :ticketID");
+    query.bindValue(":ticketID", ticketID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to remove repair schedules:" << query.lastError().text();
+        return false;
+    }
+
+    query.prepare("DELETE FROM Estimates WHERE TicketID = :ticketID");
+    query.bindValue(":ticketID", ticketID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to remove estimate parts:" << query.lastError().text();
+        return false;
+    }
+
+    query.prepare("DELETE FROM Parts WHERE TicketID = :ticketID");
+    query.bindValue(":ticketID", ticketID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to remove work log entries:" << query.lastError().text();
+        return false;
+    }
+
+    query.prepare("DELETE FROM WorkLog WHERE TicketID = :ticketID");
+    query.bindValue(":ticketID", ticketID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to remove work log entries:" << query.lastError().text();
+        return false;
+    }
+
     query.prepare("DELETE FROM Tickets WHERE TicketID = :ticketID");
     query.bindValue(":ticketID", ticketID);
 
@@ -207,7 +261,7 @@ bool DatabaseManager::removeTicket(int ticketID)
         return false;
     }
 
-    qDebug() << "Ticket removed successfully.";
+    qDebug() << "Ticket and associated entries removed successfully.";
     return true;
 }
 

@@ -37,6 +37,8 @@ private slots:
     void on_partsButton_clicked();
     void on_assignEmployeeButton_clicked();
 
+    void on_finalButton_clicked();
+
 private:
     Ui::Tickets *ui;
     DatabaseManager *dbManager;

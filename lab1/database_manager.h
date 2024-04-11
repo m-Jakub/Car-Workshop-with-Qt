@@ -24,6 +24,7 @@ public:
     bool removeTicket(int ticketID);
     bool updateTicket(int ticketID, const QString& vehicleBrand, const QString& vehicleModel, const QString& registrationID, const QString& problemDescription, int assignedEmployeeID);
     bool updateTicketState(int ticketID, const QString& state);
+    QString getTicketRegistrationID(int ticketID);
     
     int addRepairSchedule(int ticketID, int employeeID, const QString& startHour, const QString& endHour, const QString& dayOfWeek);
     
@@ -34,7 +35,7 @@ public:
     int addParts(int ticketID, const QString& description, double amount, double unitPrice);
     bool removeParts(int partID);
     bool updateParts(int partID, const QString& description, double amount, double unitPrice);
-    
+
     int addWorkLogEntry(int ticketID, int employeeID, const QString& startHour, const QString& endHour);
 
 private:

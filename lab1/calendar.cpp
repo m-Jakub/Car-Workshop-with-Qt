@@ -37,7 +37,7 @@ void Calendar::populateTable()
     {
         // Getting the employee's schedule
         QSqlQuery query;
-        query.prepare("SELECT DayOfWeek, StartHour, EndHour FROM ScheduledRepairTimeSlots WHERE EmployeeId = :employeeId");
+        query.prepare("SELECT DayOfWeek, StartHour, EndHour, TicketId FROM ScheduledRepairTimeSlots WHERE EmployeeId = :employeeId");
         query.bindValue(":employeeId", employeeID);
         if (!query.exec())
         {
@@ -50,17 +50,19 @@ void Calendar::populateTable()
             int day = query.value(0).toInt();
             int startHour = query.value(1).toInt();
             int endHour = query.value(2).toInt();
+            int ticketID = query.value(3).toInt();
 
             for (int row = startHour - 8; row < endHour - 8; ++row)
             {
-                // Setting background color for the cell
                 QTableWidgetItem *item = ui->tableWidget->item(row, day - 1);
                 if (!item)
                 {
-                    item = new QTableWidgetItem(); // Create new QTableWidgetItem if it doesn't exist
+                    item = new QTableWidgetItem();
                     ui->tableWidget->setItem(row, day - 1, item);
                 }
-                item->setBackground(QColor(Qt::gray));
+                // Setting the text and background color for the cell
+                item->setBackground(QColor((ticketID *25) % 255, (ticketID * 50) % 255, (ticketID * 75) % 255));
+                item->setText(dbManager->getTicketRegistrationID(ticketID));
             }
         }
     }
@@ -68,7 +70,7 @@ void Calendar::populateTable()
     {
         // Getting the ticket's schedule
         QSqlQuery query;
-        query.prepare("SELECT DayOfWeek, StartHour, EndHour FROM ScheduledRepairTimeSlots WHERE TicketId = :ticketId");
+        query.prepare("SELECT DayOfWeek, StartHour, EndHour, EmployeeId FROM ScheduledRepairTimeSlots WHERE TicketId = :ticketId");
         query.bindValue(":ticketId", ticketID);
         if (!query.exec())
         {
@@ -81,17 +83,18 @@ void Calendar::populateTable()
             int day = query.value(0).toInt();
             int startHour = query.value(1).toInt();
             int endHour = query.value(2).toInt();
+            int employeeID = query.value(3).toInt();
 
             for (int row = startHour - 8; row < endHour - 8; ++row)
             {
-                // Setting background color for the cell
                 QTableWidgetItem *item = ui->tableWidget->item(row, day - 1);
                 if (!item)
                 {
-                    item = new QTableWidgetItem(); // Create new QTableWidgetItem if it doesn't exist
+                    item = new QTableWidgetItem();
                     ui->tableWidget->setItem(row, day - 1, item);
                 }
-                item->setBackground(QColor(Qt::gray));
+                item->setBackground(QColor((employeeID * 25) % 255, (employeeID * 50) % 255, (employeeID * 75) % 255));
+                item->setText(dbManager->getEmployeeName(employeeID));
             }
         }
     }

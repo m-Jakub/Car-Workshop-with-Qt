@@ -6,6 +6,11 @@
 #include "estimate.h"
 #include "parts.h"
 #include <QSqlQuery>
+#include <QPdfWriter>
+#include <QPainter>
+#include <QWidget>
+#include <QFileDialog>
+#include <QSqlError>
 
 Tickets::Tickets(DatabaseManager *dbManager, QWidget *parent)
     : QWidget(parent), ui(new Ui::Tickets), dbManager(dbManager)
@@ -277,8 +282,57 @@ void Tickets::on_assignEmployeeButton_clicked()
         connect(dialogWindow, &AddTicketDialog::addTicket, this, [=](const QString &brand, const QString &model, const QString &registration, const QString problemDescription, int assignedEmployeeID, QString startHour, QString endHour, QString day)
                 {
                     dbManager->addRepairSchedule(ticketID, assignedEmployeeID, startHour, endHour, day);
-                    emit ticketsUpdated();
-                });
+                    emit ticketsUpdated(); });
     }
     dialogWindow->exec();
+}
+
+void Tickets::on_finalButton_clicked()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, "Save as PDF", "", "PDF files (*.pdf)");
+    if (fileName.isEmpty())
+        return;
+
+    QPdfWriter pdfWriter(fileName);
+
+    pdfWriter.setCreator("Car Workshop Management System");
+
+    QPainter painter(&pdfWriter);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+
+    int selectedRow = ui->tableWidget->currentRow();
+    int ticketID = rowToIdMap.value(selectedRow);
+
+    QSqlQuery query;
+    query.prepare("SELECT Description, Amount, UnitPrice, TotalPrice FROM Parts WHERE TicketID = :ticketID");
+    query.bindValue(":ticketID", ticketID);
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to fetch parts:" << query.lastError().text();
+        return;
+    }
+
+    int finalCost = 0;
+    int i = 0;
+
+    while (query.next())
+    {
+        i++;
+        QString description = query.value(0).toString();
+        int amount = query.value(1).toInt();
+        double unitPrice = query.value(2).toDouble();
+        double totalPrice = query.value(3).toDouble();
+
+        finalCost += totalPrice;
+
+        // Printing Description
+        painter.drawText(100, 100 + i * 400, description);
+
+        // Printing Total Price
+        painter.drawText(1200, 100 + i * 400, (QString::number(totalPrice, 'f', 2)) + " $");
+    }
+
+    // Printing Final Cost
+    painter.drawText(100, 100, "Final cost: ");
+    painter.drawText(1200, 100, (QString::number(finalCost, 'f', 2)) + " $");
 }

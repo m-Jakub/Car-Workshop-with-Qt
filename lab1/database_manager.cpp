@@ -315,6 +315,32 @@ bool DatabaseManager::updateTicketState(int ticketID, const QString &state)
     return true;
 }
 
+QString DatabaseManager::getTicketRegistrationID(int ticketID)
+{
+    if (!m_db.isOpen())
+    {
+        qDebug() << "Error: Database is not open.";
+        return "";
+    }
+
+    QSqlQuery query;
+    query.prepare("SELECT RegistrationID FROM Tickets WHERE TicketID = :ticketID");
+    query.bindValue(":ticketID", ticketID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to get ticket registration ID:" << query.lastError().text();
+        return "";
+    }
+
+    if (query.next())
+    {
+        return query.value(0).toString();
+    }
+
+    return "";
+}
+
 int DatabaseManager::addRepairSchedule(int ticketID, int employeeID, const QString &startHour, const QString &endHour, const QString &dayOfWeek)
 {
     if (!m_db.isOpen())

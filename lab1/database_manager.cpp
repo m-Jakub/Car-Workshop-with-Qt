@@ -315,6 +315,29 @@ bool DatabaseManager::updateTicketState(int ticketID, const QString &state)
     return true;
 }
 
+bool DatabaseManager::updateTicketPrice(int ticketID, double pricePaidByClient)
+{
+    if (!m_db.isOpen())
+    {
+        qDebug() << "Error: Database is not open.";
+        return false;
+    }
+
+    QSqlQuery query;
+    query.prepare("UPDATE Tickets SET PricePaidByClient = :pricePaidByClient WHERE TicketID = :ticketID");
+    query.bindValue(":pricePaidByClient", pricePaidByClient);
+    query.bindValue(":ticketID", ticketID);
+
+    if (!query.exec())
+    {
+        qDebug() << "Error: Failed to update ticket price paid by client:" << query.lastError().text();
+        return false;
+    }
+
+    qDebug() << "Ticket price paid by client updated successfully.";
+    return true;
+}
+
 QString DatabaseManager::getTicketRegistrationID(int ticketID)
 {
     if (!m_db.isOpen())

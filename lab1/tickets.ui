@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>950</width>
-    <height>435</height>
+    <width>986</width>
+    <height>456</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>764</x>
+     <x>800</x>
      <y>60</y>
      <width>171</width>
-     <height>294</height>
+     <height>321</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -55,13 +55,6 @@
      <widget class="QPushButton" name="partsButton">
       <property name="text">
        <string>Parts Used</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="workLogButton">
-      <property name="text">
-       <string>Work Log</string>
       </property>
      </widget>
     </item>
@@ -102,13 +95,23 @@
     <item>
      <widget class="QComboBox" name="stateComboBox"/>
     </item>
+    <item>
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>Price Paid by the Client:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QDoubleSpinBox" name="priceDoubleSpinBox"/>
+    </item>
    </layout>
   </widget>
   <widget class="QPushButton" name="addButton">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>370</y>
+     <x>30</x>
+     <y>400</y>
      <width>121</width>
      <height>24</height>
     </rect>
@@ -120,7 +123,7 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>780</x>
+     <x>800</x>
      <y>40</y>
      <width>81</width>
      <height>16</height>
@@ -133,18 +136,19 @@
   <widget class="QTableWidget" name="tableWidget">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>30</x>
      <y>40</y>
-     <width>701</width>
-     <height>311</height>
+     <width>741</width>
+     <height>341</height>
     </rect>
    </property>
    <property name="rowCount">
     <number>0</number>
    </property>
    <property name="columnCount">
-    <number>6</number>
+    <number>7</number>
    </property>
+   <column/>
    <column/>
    <column/>
    <column/>

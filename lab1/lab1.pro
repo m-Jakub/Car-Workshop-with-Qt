@@ -23,8 +23,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     parts.cpp \
-    tickets.cpp \
-    worklog.cpp
+    tickets.cpp
 
 HEADERS += \
     add_employee_dialog.h \
@@ -37,8 +36,7 @@ HEADERS += \
     estimate.h \
     mainwindow.h \
     parts.h \
-    tickets.h \
-    worklog.h
+    tickets.h
 
 FORMS += \
     add_employee_dialog.ui \
@@ -50,8 +48,7 @@ FORMS += \
     estimate.ui \
     mainwindow.ui \
     parts.ui \
-    tickets.ui \
-    worklog.ui
+    tickets.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

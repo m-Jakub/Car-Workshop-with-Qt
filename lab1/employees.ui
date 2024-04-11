@@ -62,13 +62,6 @@
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="showTicketsButton">
-      <property name="text">
-       <string>Show Tickets</string>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QPushButton" name="updateButton">
       <property name="text">
        <string>Update</string>

@@ -36,8 +36,8 @@ private slots:
     void on_estimateButton_clicked();
     void on_partsButton_clicked();
     void on_assignEmployeeButton_clicked();
-
     void on_finalButton_clicked();
+    void on_priceDoubleSpinBox_valueChanged(double arg1);
 
 private:
     Ui::Tickets *ui;

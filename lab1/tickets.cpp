@@ -35,6 +35,8 @@ void Tickets::changeButtonsState(bool state)
     ui->stateComboBox->setEnabled(state);
     ui->partsButton->setEnabled(state);
     ui->assignEmployeeButton->setEnabled(state);
+    ui->finalButton->setEnabled(state);
+    ui->priceDoubleSpinBox->setEnabled(state);
 }
 
 void Tickets::setupTable()
@@ -46,7 +48,8 @@ void Tickets::setupTable()
                  << "Model"
                  << "Registration"
                  << "Problem Description"
-                 << "Assigned Employee";
+                 << "Assigned Employee"
+                 << "Price Paid [$]";
     ui->tableWidget->setHorizontalHeaderLabels(headerLabels);
 
     // Resizing columns
@@ -112,6 +115,7 @@ void Tickets::populateTable()
         ui->tableWidget->setItem(row, 3, registrationItem);
         ui->tableWidget->setItem(row, 4, problemDescriptionItem);
         ui->tableWidget->setItem(row, 5, assignedEmployeeItem);
+        ui->tableWidget->setItem(row, 6, pricePaidItem);
 
         // Storing the ID in the rowToIdMap
         rowToIdMap[row] = id;
@@ -230,6 +234,7 @@ void Tickets::onTableRowClicked(QTableWidgetItem *item)
 
         // Setting the default selection of the combo box to the retrieved state value
         ui->stateComboBox->setCurrentText(state);
+        ui->priceDoubleSpinBox->setValue(ui->tableWidget->item(selectedRow, 6)->text().toDouble());
     }
 }
 
@@ -336,3 +341,16 @@ void Tickets::on_finalButton_clicked()
     painter.drawText(100, 100, "Final cost: ");
     painter.drawText(1200, 100, (QString::number(finalCost, 'f', 2)) + " $");
 }
+
+void Tickets::on_priceDoubleSpinBox_valueChanged(double arg1)
+{
+    int selectedRow = ui->tableWidget->currentRow();
+    int ticketID = rowToIdMap.value(selectedRow);
+
+    if (ticketID != 0)
+    {
+        dbManager->updateTicketPrice(ticketID, arg1);
+        ui->tableWidget->item(selectedRow, 6)->setText(QString::number(arg1));
+    }
+}
+

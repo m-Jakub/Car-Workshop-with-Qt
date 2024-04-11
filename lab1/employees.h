@@ -18,6 +18,7 @@ class Employees : public QWidget
 public:
     explicit Employees(DatabaseManager *dbmanager, QWidget *parent = nullptr);
     ~Employees();
+    void changeButtonsState(bool state);
     void setupTable();
     void populateTable();
 
@@ -32,6 +33,8 @@ private slots:
     void on_addButton_clicked();
     void on_updateButton_clicked();
     void on_calendarButton_clicked();
+
+    void on_tableWidget_cellClicked(int row, int column);
 
 private:
     Ui::Employees *ui;

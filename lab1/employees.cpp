@@ -19,6 +19,13 @@ Employees::~Employees()
     delete ui;
 }
 
+void Employees::changeButtonsState(bool state)
+{
+    ui->deleteButton->setEnabled(state);
+    ui->updateButton->setEnabled(state);
+    ui->calendarButton->setEnabled(state);
+}
+
 void Employees::setupTable()
 {
     // Setting column names
@@ -37,6 +44,9 @@ void Employees::setupTable()
     // Setting the window title
     setWindowTitle("Employees - Car Workshop Management System");
 
+    // Disabling the buttons initially
+    changeButtonsState(false);
+
     // Making the table read-only
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
@@ -45,6 +55,9 @@ void Employees::populateTable()
 {
     ui->tableWidget->clearContents();
     ui->tableWidget->setRowCount(0);
+
+    // Disabling the buttons after updating the table
+    changeButtonsState(false);
 
     QSqlQuery query("SELECT EmployeeId, Name, HourlyRate FROM Employees");
     if (!query.exec())
@@ -146,7 +159,7 @@ void Employees::on_updateButton_clicked()
 
         // Inserting the employee into the database
         dbManager->updateEmployee(employeeId, name, hourlyRate);
-        
+
         // Inserting the employee into the tableWidget
         int row = ui->tableWidget->rowCount();
         ui->tableWidget->setItem(selectedRow, 0, new QTableWidgetItem(name));
@@ -172,3 +185,9 @@ void Employees::on_calendarButton_clicked()
         calendar->exec();
     }
 }
+
+void Employees::on_tableWidget_cellClicked(int row, int column)
+{
+    changeButtonsState(true);
+}
+

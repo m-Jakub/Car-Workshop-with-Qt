@@ -694,3 +694,57 @@ bool DatabaseManager::createTables()
 
     return true;
 }
+
+void DatabaseManager::fillDatabaseWithExemplaryData(DatabaseManager *dbManager)
+{
+    // Adding employees
+    dbManager->addEmployee("John Doe", 20.0);
+    dbManager->addEmployee("Ivan Ivanov", 25.0);
+    dbManager->addEmployee("Oliver Smith", 30.0);
+    dbManager->addEmployee("Maria Garcia", 35.0);
+    dbManager->addEmployee("Anna Johnson", 40.0);
+
+    // Adding tickets
+    dbManager->addTicket("Ford", "Focus", "KR12345", "Engine failure", 1, 0.0, "created");
+    dbManager->addTicket("Audi", "A4", "KR67890", "Brake failure", 2, 0.0, "in progress");
+    dbManager->addTicket("BMW", "X5", "KR54321", "Gearbox failure", 3, 300.0, "closed");
+    dbManager->addTicket("Mercedes", "C-Class", "KR09876", "Suspension failure", 4, 0.0, "in progress");
+    dbManager->addTicket("Volkswagen", "Golf", "KR45678", "Steering failure", 5, 0.0, "done");
+    dbManager->addTicket("Toyota", "Corolla", "KR78901", "Electrical fail", 1, 600.0, "closed");
+    dbManager->addTicket("Opel", "Astra", "KR23456", "Cooling system failure", 2, 0.0, "created");
+
+    // Adding repair schedules
+    dbManager->addRepairSchedule(1, 1, "8", "12", "3");
+    dbManager->addRepairSchedule(1, 1, "13", "17", "3");
+    dbManager->addRepairSchedule(1, 2, "8", "10", "4");
+    dbManager->addRepairSchedule(2, 2, "8", "11", "1");
+    dbManager->addRepairSchedule(2, 3, "8", "12", "6");
+    dbManager->addRepairSchedule(3, 3, "14", "16", "2");
+    dbManager->addRepairSchedule(3, 5, "15", "19", "2");
+    dbManager->addRepairSchedule(4, 4, "9", "12", "5");
+    dbManager->addRepairSchedule(4, 4, "13", "17", "5");
+    dbManager->addRepairSchedule(5, 5, "8", "12", "2");
+    dbManager->addRepairSchedule(5, 5, "13", "17", "1");
+    dbManager->addRepairSchedule(6, 1, "8", "12", "3");
+    dbManager->addRepairSchedule(6, 1, "13", "17", "3");
+
+    // Adding estimates
+    dbManager->addEstimate(1, "Engine needs to be replaced, we have to order a new one.", 1000.0, false);
+    dbManager->addEstimate(2, "Brake pads need to be replaced, we have them in stock.", 200.0, true);
+    dbManager->addEstimate(3, "Gearbox needs to be repaired, we have to order parts.", 300.0, false);
+    dbManager->addEstimate(6, "Electrical system needs to be repaired, we have to order parts.", 600.0, true);
+    dbManager->addEstimate(7, "Cooling system needs to be repaired, we have to order parts.", 700.0, true);
+
+    // Adding parts
+    dbManager->addParts(1, "Engine", 1, 1000.0);
+    dbManager->addParts(1, "Oil", 5, 10.0);
+    dbManager->addParts(2, "Brake pads", 1, 200.0);
+    dbManager->addParts(2, "Brake discs", 2, 50.0);
+    dbManager->addParts(2, "Brake fluid", 1, 10.0);
+    dbManager->addParts(3, "Gearbox", 1, 300.0);
+    dbManager->addParts(6, "Electrical system parts", 1, 600.0);
+    dbManager->addParts(7, "Cooling system parts", 1, 700.0);
+
+
+
+}

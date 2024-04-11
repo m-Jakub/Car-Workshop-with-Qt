@@ -7,10 +7,12 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    // short testing for database manager
     DatabaseManager dbManager("database.db");
 
-    // other code
+    // Filling the database with some data
+    // Can be uncommented to fill the database with some data
+    dbManager.fillDatabaseWithExemplaryData(&dbManager);
+
     MainWindow w(&dbManager);
     w.show();
 

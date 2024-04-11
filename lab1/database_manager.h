@@ -39,6 +39,8 @@ public:
 
     int addWorkLogEntry(int ticketID, int employeeID, const QString& startHour, const QString& endHour);
 
+    void fillDatabaseWithExemplaryData(DatabaseManager *dbManager);
+
 private:
     QSqlDatabase m_db;
     QString m_path;

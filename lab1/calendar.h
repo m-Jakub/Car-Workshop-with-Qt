@@ -19,12 +19,14 @@ public:
     void populateTable();
     void addSelectedSlotsToRepairSchedule();
     void disableSelectionOfOccupiedSlots();
+    void saveCalendarAsPDF();
 
 signals:
     void addRepairSchedule(const QString &startHour, const QString &endHour, const QString &day);
 
 private slots:
     void on_buttonBox_accepted();
+    void on_pushButton_clicked();
 
 private:
     Ui::Calendar *ui;

@@ -3,6 +3,10 @@
 #include "database_manager.h"
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QPdfWriter>
+#include <QPainter>
+#include <QWidget>
+#include <QFileDialog>
 
 Calendar::Calendar(DatabaseManager *dbManager, int ticketID, int employeeID, QWidget *parent)
     : QDialog(parent), ui(new Ui::Calendar), dbManager(dbManager), ticketID(ticketID), employeeID(employeeID)
@@ -149,7 +153,35 @@ void Calendar::disableSelectionOfOccupiedSlots()
     }
 }
 
+void Calendar::saveCalendarAsPDF()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, "Save as PDF", "", "PDF files (*.pdf)");
+    if (fileName.isEmpty())
+        return;
+
+    QPdfWriter pdfWriter(fileName);
+
+    // Setting document properties
+    pdfWriter.setCreator("Car Workshop Management System");
+    pdfWriter.setTitle("PDF Document Title");
+
+    QPainter painter(&pdfWriter);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+
+    // Scaling the painter to fit the table widget
+    painter.scale(13, 13);
+
+    // Rendering the widget onto the painter
+    ui->tableWidget->render(&painter);
+}
+
+
 void Calendar::on_buttonBox_accepted()
 {
     addSelectedSlotsToRepairSchedule();
+}
+
+void Calendar::on_pushButton_clicked()
+{
+    saveCalendarAsPDF();
 }

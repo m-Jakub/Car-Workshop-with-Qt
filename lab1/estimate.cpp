@@ -4,6 +4,10 @@
 #include <QPushButton>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QPdfWriter>
+#include <QPainter>
+#include <QWidget>
+#include <QFileDialog>
 
 Estimate::Estimate(DatabaseManager *dbManager, int ticketID, QWidget *parent)
     : QDialog(parent), ui(new Ui::Estimate), dbManager(dbManager), ticketID(ticketID)
@@ -43,6 +47,34 @@ void Estimate::fillFields()
     }
 }
 
+void Estimate::saveEstimateAsPDF()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, "Save as PDF", "", "PDF files (*.pdf)");
+    if (fileName.isEmpty())
+        return;
+
+    QPdfWriter pdfWriter(fileName);
+
+    // Setting document properties
+    pdfWriter.setCreator("Car Workshop Management System");
+
+    QPainter painter(&pdfWriter);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+
+    // Printing Description to text
+    painter.drawText(100, 100, "Description:");
+    painter.drawText(1000, 100, ui->description->toPlainText());
+    
+    // Printing Expected Cost below
+    painter.drawText(100, 500, "Expected Cost:");
+    painter.drawText(1200, 500, (QString::number(ui->expectedCost->value()) + " $"));
+    
+
+    // Printing Accepted By Client
+    painter.drawText(100, 900, "Accepted By Client:");
+    painter.drawText(1500, 900, ui->acceptedByClient->currentText());
+}
+
 void Estimate::on_buttonBox_accepted()
 {
     if (dbManager->estimateExists(ticketID))
@@ -51,3 +83,9 @@ void Estimate::on_buttonBox_accepted()
     else
         dbManager->addEstimate(ticketID, ui->description->toPlainText(), ui->expectedCost->value(), ui->acceptedByClient->currentIndex());
 }
+
+void Estimate::on_pushButton_clicked()
+{
+    saveEstimateAsPDF();
+}
+

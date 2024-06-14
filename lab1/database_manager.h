@@ -40,6 +40,7 @@ public:
     int addWorkLogEntry(int ticketID, int employeeID, const QString& startHour, const QString& endHour);
 
     void fillDatabaseWithExemplaryData(DatabaseManager *dbManager);
+    bool isDatabaseEmpty();
 
 private:
     QSqlDatabase m_db;

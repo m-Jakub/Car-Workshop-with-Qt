@@ -744,7 +744,32 @@ void DatabaseManager::fillDatabaseWithExemplaryData(DatabaseManager *dbManager)
     dbManager->addParts(3, "Gearbox", 1, 300.0);
     dbManager->addParts(6, "Electrical system parts", 1, 600.0);
     dbManager->addParts(7, "Cooling system parts", 1, 700.0);
+}
 
+bool DatabaseManager::isDatabaseEmpty()
+{
+    if (!m_db.isOpen())
+    {
+        qDebug() << "Error: Database is not open.";
+        return true;
+    }
 
+    QStringList tables = m_db.tables();
+    foreach (const QString &table, tables) {
+        QSqlQuery query(QString("SELECT COUNT(*) FROM %1").arg(table));
 
+        if (!query.exec())
+        {
+            qDebug() << "Error: Failed to check if database is empty:" << query.lastError().text();
+            return true;
+        }
+
+        if (query.next())
+        {
+            if (query.value(0).toInt() != 0)
+                return false;
+        }
+    }
+
+    return true;
 }

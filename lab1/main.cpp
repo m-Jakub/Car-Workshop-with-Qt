@@ -9,9 +9,8 @@ int main(int argc, char *argv[])
 
     DatabaseManager dbManager("database.db");
 
-    // Filling the database with some data
-    // Can be uncommented to fill the database with some data
-    dbManager.fillDatabaseWithExemplaryData(&dbManager);
+    if (dbManager.isDatabaseEmpty())
+        dbManager.fillDatabaseWithExemplaryData(&dbManager);
 
     MainWindow w(&dbManager);
     w.show();
